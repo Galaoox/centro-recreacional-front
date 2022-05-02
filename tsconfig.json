@@ -53,6 +53,12 @@
             "@context/*": [
                 "./src/context/*"
             ],
+            "@styles/*": [
+                "./src/styles/*"
+            ],
+            "@config/*": [
+                "./src/config/*"
+            ],
         },
     },
     "include": [

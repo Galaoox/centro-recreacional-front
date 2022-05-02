@@ -1,7 +1,8 @@
+import { AuthInfo } from "@models/auth-info.model";
 import { createContext } from "react";
 // todo: cambiar los tipos
 interface AuthContextType {
-    user: any;
+    user: AuthInfo;
     signin: (user: string, callback: VoidFunction) => void;
     signout: (callback: VoidFunction) => void;
 }

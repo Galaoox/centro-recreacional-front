@@ -1,8 +1,15 @@
-import React from 'react'
+import { Typography } from 'antd';
+import TableTiposAlojamientos from '@components/Admin/TiposAlojamientos/TableTiposAlojamientos';
+
+const { Title } = Typography;
+
 
 const TiposAlojamientos = () => {
   return (
-    <div>TiposAlojamientos</div>
+    <>
+        <Title level={1}>Tipos de alojamientos</Title>
+        <TableTiposAlojamientos />
+    </>
   )
 }
 

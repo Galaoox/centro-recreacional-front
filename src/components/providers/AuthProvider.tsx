@@ -1,20 +1,25 @@
 import { AuthContext } from "@context/AuthContext";
+import { AuthInfo } from "@models/auth-info.model";
 import { fakeAuthProvider } from "@services/auth";
 import { ReactNode, useState } from "react";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-    let [user, setUser] = useState<any>(null);
+    let [user, setUser] = useState<AuthInfo>({
+        isAdmin: false,
+        accessToken: "",
+        name: '',
+    });
   
     let signin = (newUser: string, callback: VoidFunction) => {
       return fakeAuthProvider.signin(() => {
-        setUser(newUser);
+        setUser(new AuthInfo('test', newUser, newUser == 'admin'));
         callback();
       });
     };
   
     let signout = (callback: VoidFunction) => {
       return fakeAuthProvider.signout(() => {
-        setUser(null);
+        setUser(new AuthInfo());
         callback();
       });
     };
