@@ -43,7 +43,6 @@ const TableTiposAlojamientos = () => {
     const getApiData = async () => await callEndpoint(GetAllTiposAlojamiento());
 
     const handleChangeRowSelection = (selectedRowKeys: React.Key[], selectedRows: TipoAlojamiento[]) => {
-        console.log(selectedRows);
         setSelection(selectedRows[0] ? selectedRows[0] : null);
     };
 
@@ -96,7 +95,6 @@ const TableTiposAlojamientos = () => {
         setVisibleForm(false);
     }
 
-    // getData();
     return (
         <>
             <ActionsButtonsTable items={buttonsActions} />
