@@ -1,79 +1,68 @@
-import { CloseOutlined, DeleteOutlined, EditOutlined, PlusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import {  DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import ActionsButtonsTable from '@components/ActionsButtonsTable';
+import { useAsync } from '@hooks/useAsync';
+import useFetchAndLoad from '@hooks/useFetchAndLoad';
 import { ActionButtonTable } from '@models/action-button-table.model';
-import { Button, Table, Space } from 'antd';
-import { useState } from 'react';
+import { TipoAlojamiento } from '@models/tipo-alojamiento';
+import { GetAllTiposAlojamiento } from '@services/tipos-alojamiento.service';
+import { Table } from 'antd';
+import { useState, useEffect } from 'react';
+import ModalTiposAlojamientos from './ModalTiposAlojamientos';
 
 
 const columns = [
     {
-        title: 'Name',
-        dataIndex: 'name',
+        title: 'Nombre',
+        dataIndex: 'nombre',
+
     },
     {
-        title: 'Age',
-        dataIndex: 'age',
+        title: 'Descripcion',
+        dataIndex: 'descripcion',
     },
     {
-        title: 'Address',
-        dataIndex: 'address',
+        title: 'Capacidad de personas',
+        dataIndex: 'capacidadPersonas',
+    },
+        {
+        title: 'Cantidad disponibles',
+        dataIndex: 'cantidadDisponibles',
+    },
+    {
+        title: 'Valor',
+        dataIndex: 'valor',
     },
 ];
-
-interface DataType {
-    key: React.Key;
-    name: string;
-    age: number;
-    address: string;
-}
-
-const data: DataType[] = [
-    {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-    },
-    {
-        key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-    },
-    {
-        key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sidney No. 1 Lake Park',
-    },
-    {
-        key: '4',
-        name: 'Disabled User',
-        age: 99,
-        address: 'Sidney No. 1 Lake Park',
-    },
-];
-
 
 const TableTiposAlojamientos = () => {
-
+    const { loading, callEndpoint } = useFetchAndLoad();
+    const [data, setData] = useState<TipoAlojamiento[]>([]);
     const [selection, setSelection] = useState<any>(null);
+    const [visibleForm, setVisibleForm] = useState<boolean>(false);
 
-    const handleChangeRowSelection = (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+    const getApiData = async () => await callEndpoint(GetAllTiposAlojamiento());
+
+    const handleChangeRowSelection = (selectedRowKeys: React.Key[], selectedRows: TipoAlojamiento[]) => {
+        console.log(selectedRows);
         setSelection(selectedRows[0] ? selectedRows[0] : null);
     };
 
     const handleAdd = () => {
-        console.log('Add');
+        setVisibleForm(true);
     }
 
     const handleEdit = () => {
-        console.log('Edit', selection);
+        setVisibleForm(true);
     }
 
     const handleRemove = () => {
-        console.log('Remove', selection);
+        
     }
+    const adaptTipoAlojamiento = (data:any)=>{
+        setData(data);
+    }
+
+    useAsync(getApiData, adaptTipoAlojamiento, () => {});
 
     const buttonsActions: ActionButtonTable[] = [
         {
@@ -99,6 +88,15 @@ const TableTiposAlojamientos = () => {
         },
     ]
 
+    const showModal = () => {
+        setVisibleForm(true);
+    }
+
+    const closeModal = () => {
+        setVisibleForm(false);
+    }
+
+    // getData();
     return (
         <>
             <ActionsButtonsTable items={buttonsActions} />
@@ -108,8 +106,11 @@ const TableTiposAlojamientos = () => {
                     onChange: handleChangeRowSelection,
                 }}
                 columns={columns}
+                rowKey={'id'}
                 dataSource={data}
             />
+            <ModalTiposAlojamientos closeModal={closeModal} title='Tipos de alojamientos' visible={visibleForm} data={selection}>
+            </ModalTiposAlojamientos>
         </>
     )
 }

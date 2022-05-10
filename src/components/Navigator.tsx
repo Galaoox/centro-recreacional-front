@@ -1,4 +1,3 @@
-import RequireAuth from "@guards/RequireAuth"
 import AdminLayout from "@layouts/AdminLayout"
 import UserLayout from "@layouts/UserLayout"
 import CategoriasMenu from "@pages/Admin/CategoriasMenu"
@@ -20,45 +19,49 @@ import TipoMembresia from "@pages/Admin/TipoMembresia"
 import TiposAdicionesAlojamiento from "@pages/Admin/TiposAdicionesAlojamiento"
 import TiposEntradas from "@pages/Admin/TiposEntradas"
 import Dashboard from "@pages/Admin/Dashboard"
+import { LoadingProvider } from './providers/LoadingProvider';
 
 export const Navigator = () => {
     return (
-        <AuthProvider>
-            <Routes>
-                {/* <Route path="/" element={<UserLayout />}>
-                    <Route index element={
-                        <Index />
-                    } />
-                    <Route path="inicio-sesion" element={<Login />} />
-                    <Route path="registro" element={<Register />} />
-                    <Route path="horarios" element={<Horarios />} />
-                    <Route path="restaurante" element={<Restaurante />} />
-                    <Route path="atracciones" element={<Atracciones />} />
-                </Route> */}
-                <Route path="/" element={
-                    // <RequireAuth>
+        <LoadingProvider>
+            <AuthProvider>
+                <Routes>
+                    <Route path="/" element={<UserLayout />}>
+                        <Route index element={
+                            <Index />
+                        } />
+                        <Route path="inicio-sesion" element={<Login />} />
+                        <Route path="registro" element={<Register />} />
+                        <Route path="horarios" element={<Horarios />} />
+                        <Route path="restaurante" element={<Restaurante />} />
+                        <Route path="atracciones" element={<Atracciones />} />
+                    </Route>
+                    <Route path="admin" element={
+                        // <RequireAuth>
                         // <RequireIsAdmin>
-                                <AdminLayout />
+                        <AdminLayout />
                         // </RequireIsAdmin>
-                    // </RequireAuth>
-                }>
-                    
-                    <Route index element={<Dashboard />} />
-                    <Route path="tipos-alojamientos" element={<TiposAlojamientos />} />
-                    <Route path="atracciones" element={<AtraccionesAdmin />} />
-                    <Route path="categorias-menu" element={<CategoriasMenu />} />
-                    <Route path="elementos-menu" element={<ElementosMenu />} />
-                    <Route path="horarios" element={<HorariosAdmin />} />
-                    <Route path="tipos-documento" element={<TipoDocumento />} />
-                    <Route path="tipos-membresia" element={<TipoMembresia />} />
-                    <Route path="tipos-adiciones-alojamientos" element={<TiposAdicionesAlojamiento />} />
-                    <Route path="tipos-alojamientos" element={<TiposAlojamientos />} />
-                    <Route path="tipos-entradas" element={<TiposEntradas />} />
+                        // </RequireAuth>
+                    }>
 
-                </Route>
+                        <Route index element={<Dashboard />} />
+                        <Route path="tipos-alojamientos" element={<TiposAlojamientos />} />
+                        <Route path="atracciones" element={<AtraccionesAdmin />} />
+                        <Route path="categorias-menu" element={<CategoriasMenu />} />
+                        <Route path="elementos-menu" element={<ElementosMenu />} />
+                        <Route path="horarios" element={<HorariosAdmin />} />
+                        <Route path="tipos-documento" element={<TipoDocumento />} />
+                        <Route path="tipos-membresia" element={<TipoMembresia />} />
+                        <Route path="tipos-adiciones-alojamientos" element={<TiposAdicionesAlojamiento />} />
+                        <Route path="tipos-alojamientos" element={<TiposAlojamientos />} />
+                        <Route path="tipos-entradas" element={<TiposEntradas />} />
+
+                    </Route>
 
 
-            </Routes>
-        </AuthProvider>
+                </Routes>
+            </AuthProvider>
+        </LoadingProvider>
+
     )
 }
