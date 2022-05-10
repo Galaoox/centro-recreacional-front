@@ -1,9 +1,11 @@
 import { AxiosCall } from '@models/axios-call.model';
 import { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
+import { useLoading } from './useLoading';
 
 const useFetchAndLoad = () => {
-    const [loading, setLoading] = useState(false);
+    const { loading, setLoading } = useLoading();
+    // const [loading, setLoading] = useState(false);
     let controller: AbortController;
 
     const callEndpoint = async (axiosCall: AxiosCall<any>) => {

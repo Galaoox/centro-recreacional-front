@@ -1,4 +1,8 @@
+import { useAsync } from '@hooks/useAsync';
+import useFetchAndLoad from '@hooks/useFetchAndLoad';
 import { useLoading } from '@hooks/useLoading';
+import { TipoAlojamiento } from '@models/tipo-alojamiento';
+import { CreateTipoAlojamiento } from '@services/tipos-alojamiento.service';
 import { formIsValid } from '@utilities/form.utility';
 import { Modal, Button, Form, DatePicker, InputNumber, Switch, Cascader, TreeSelect, Select, Input, Radio, Row, Col } from 'antd';
 import { FC, useState } from "react";
@@ -7,25 +11,42 @@ interface ModalTiposAlojamientosProps {
     closeModal: (result: any) => void;
     data: any;
     visible: boolean;
-    title: string;
-    children: React.ReactNode;
+    action: string;
 }
 
 
 
-const ModalTiposAlojamientos: FC<ModalTiposAlojamientosProps> = ({ closeModal, visible, data, title, children }) => {
+const ModalTiposAlojamientos: FC<ModalTiposAlojamientosProps> = ({ closeModal, visible, data,action  }) => {
     const [form] = Form.useForm();
-    const { setLoading} = useLoading();
+    const { loading, callEndpoint } = useFetchAndLoad();
+
+    const create = async (data: TipoAlojamiento)=> {
+        const result = await callEndpoint(CreateTipoAlojamiento(data));
+    };
+
+
 
     const handleSubmit = async () => {
-        const test = await form.getFieldsError();
-        console.log(test);
-        if(formIsValid(test)){
-            setLoading(true);
+        try{
+            let result = await form.validateFields();
+            result.cantidadDisponibles = Number(result.cantidadDisponibles);
+            result.capacidadPersonas = Number(result.capacidadPersonas);
+            result.valor = Number(result.valor);
+
+
+            if (action =='add') {
+                await create(result);
+            }else{
+
+            }
+            closeModal(true);
+        }catch(e){
 
         }
-        // closeModal(true);
     }
+
+
+
 
     const rulesForm = {
         nombre: [{ required: true, message: 'El nombre es requerido' }],
@@ -40,7 +61,7 @@ const ModalTiposAlojamientos: FC<ModalTiposAlojamientosProps> = ({ closeModal, v
         <Modal
             forceRender
             visible={visible}
-            title="Tipos de alojamientos"
+            title={action === 'add' ? 'Crear tipo de alojamiento' : 'Editar tipo de alojamiento'}
             onCancel={closeModal}
             footer={[
                 <Button key="back" onClick={closeModal}>
@@ -83,7 +104,7 @@ const ModalTiposAlojamientos: FC<ModalTiposAlojamientosProps> = ({ closeModal, v
                     <Input type="number" required min={1}    />
                 </Form.Item>
 
-                <Form.Item name="imagen" label="Imagen">
+                <Form.Item  label="Imagen">
                     <Input type="file" />
                 </Form.Item>
 

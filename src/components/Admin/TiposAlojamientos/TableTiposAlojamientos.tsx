@@ -1,14 +1,15 @@
-import {  DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import {  DeleteOutlined, EditOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import ActionsButtonsTable from '@components/ActionsButtonsTable';
 import { useAsync } from '@hooks/useAsync';
 import useFetchAndLoad from '@hooks/useFetchAndLoad';
 import { ActionButtonTable } from '@models/action-button-table.model';
 import { TipoAlojamiento } from '@models/tipo-alojamiento';
-import { GetAllTiposAlojamiento } from '@services/tipos-alojamiento.service';
-import { Table } from 'antd';
-import { useState, useEffect } from 'react';
+import { DeleteTipoAlojamiento, GetAllTiposAlojamiento } from '@services/tipos-alojamiento.service';
+import { Modal, Table } from 'antd';
+import { useState } from 'react';
 import ModalTiposAlojamientos from './ModalTiposAlojamientos';
 
+const { confirm } = Modal;
 
 const columns = [
     {
@@ -39,6 +40,7 @@ const TableTiposAlojamientos = () => {
     const [data, setData] = useState<TipoAlojamiento[]>([]);
     const [selection, setSelection] = useState<any>(null);
     const [visibleForm, setVisibleForm] = useState<boolean>(false);
+    const [action, setAction] = useState<string>('');
 
     const getApiData = async () => await callEndpoint(GetAllTiposAlojamiento());
 
@@ -47,14 +49,32 @@ const TableTiposAlojamientos = () => {
     };
 
     const handleAdd = () => {
+        setAction('add');
         setVisibleForm(true);
     }
 
     const handleEdit = () => {
+        setAction('edit');
         setVisibleForm(true);
     }
 
+    const remove = async()=>{
+        await callEndpoint(DeleteTipoAlojamiento(selection.id));
+        await reloadData();
+    }
+
     const handleRemove = () => {
+        confirm({
+            title: 'Esta seguro que desea eliminar el registro?',
+            icon: <ExclamationCircleOutlined />,
+            okText: 'Si',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                remove();
+            }
+
+          });
         
     }
     const adaptTipoAlojamiento = (data:any)=>{
@@ -91,7 +111,13 @@ const TableTiposAlojamientos = () => {
         setVisibleForm(true);
     }
 
-    const closeModal = () => {
+    const reloadData = async ()=>{
+        const result = await getApiData();
+        adaptTipoAlojamiento(result.data);
+    }
+
+    const closeModal = async (val: boolean) => {
+        if(val) reloadData();
         setVisibleForm(false);
     }
 
@@ -106,9 +132,9 @@ const TableTiposAlojamientos = () => {
                 columns={columns}
                 rowKey={'id'}
                 dataSource={data}
+                pagination={{ pageSize: 10 }}
             />
-            <ModalTiposAlojamientos closeModal={closeModal} title='Tipos de alojamientos' visible={visibleForm} data={selection}>
-            </ModalTiposAlojamientos>
+            <ModalTiposAlojamientos closeModal={closeModal}  visible={visibleForm} action={action} data={selection} />
         </>
     )
 }
