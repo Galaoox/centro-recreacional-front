@@ -14,7 +14,7 @@ const ActionsButtonsTable: FC<props> = ({items}) => {
         <Space style={styles.containerButtons}>
             {
                 items.map(item => (
-                    <Button key={item.key} icon={createElement(item.icon)} onClick={item.action} disabled={item.disabled} >{item.label}</Button>
+                    <Button key={item.key} icon={createElement(item.icon)} onClick={item.action} disabled={item.disabled} loading={item.loading} >{item.label}</Button>
                 ))
             }
         </Space>

@@ -49,8 +49,8 @@ const TableTiposAlojamientos = () => {
     };
 
     const handleAdd = () => {
-        setAction('add');
         setVisibleForm(true);
+        setAction('add');
     }
 
     const handleEdit = () => {
@@ -90,6 +90,7 @@ const TableTiposAlojamientos = () => {
             icon: PlusCircleOutlined,
             action: handleAdd,
             disabled: false,
+            loading: loading,
         },
         {
             key: 'edit',
@@ -97,6 +98,7 @@ const TableTiposAlojamientos = () => {
             icon: EditOutlined,
             action: handleEdit,
             disabled: !selection,
+            loading: loading,
         },
         {
             key: 'remove',
@@ -104,6 +106,7 @@ const TableTiposAlojamientos = () => {
             icon: DeleteOutlined,
             action: handleRemove,
             disabled: !selection,
+            loading: loading,
         },
     ]
 
@@ -134,7 +137,9 @@ const TableTiposAlojamientos = () => {
                 dataSource={data}
                 pagination={{ pageSize: 10 }}
             />
-            <ModalTiposAlojamientos closeModal={closeModal}  visible={visibleForm} action={action} data={selection} />
+            {
+                visibleForm && (<ModalTiposAlojamientos closeModal={closeModal}  visible={visibleForm} action={action} data={selection} />)
+            }
         </>
     )
 }

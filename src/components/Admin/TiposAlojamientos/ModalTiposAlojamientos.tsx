@@ -1,15 +1,13 @@
 import { useAsync } from '@hooks/useAsync';
 import useFetchAndLoad from '@hooks/useFetchAndLoad';
-import { useLoading } from '@hooks/useLoading';
 import { TipoAlojamiento } from '@models/tipo-alojamiento';
-import { CreateTipoAlojamiento } from '@services/tipos-alojamiento.service';
-import { formIsValid } from '@utilities/form.utility';
-import { Modal, Button, Form, DatePicker, InputNumber, Switch, Cascader, TreeSelect, Select, Input, Radio, Row, Col } from 'antd';
-import { FC, useState } from "react";
+import { CreateTipoAlojamiento, GetTipoAlojamiento, UpdateTipoAlojamiento } from '@services/tipos-alojamiento.service';
+import { Modal, Button, Form, Input, Row, Col } from 'antd';
+import { FC, useEffect } from 'react';
 
 interface ModalTiposAlojamientosProps {
     closeModal: (result: any) => void;
-    data: any;
+    data: TipoAlojamiento;
     visible: boolean;
     action: string;
 }
@@ -20,10 +18,41 @@ const ModalTiposAlojamientos: FC<ModalTiposAlojamientosProps> = ({ closeModal, v
     const [form] = Form.useForm();
     const { loading, callEndpoint } = useFetchAndLoad();
 
+    const getTipoAlojamientoApi = async (id:number) => await callEndpoint(GetTipoAlojamiento(id));
+
+    const adaptTipoAlojamiento = (data: TipoAlojamiento)=>{
+        form.setFieldsValue({
+            nombre: data.nombre,
+            descripcion: data.descripcion,
+            capacidadPersonas: data.capacidadPersonas,
+            cantidadDisponibles: data.cantidadDisponibles,
+            valor: data.valor,
+        }) 
+    }
+
+    const getTipoAlojamiento = async()=>{
+        if(data?.id && visible){
+            const result = await getTipoAlojamientoApi(data.id);
+            adaptTipoAlojamiento(result.data);
+        }
+    }
+
     const create = async (data: TipoAlojamiento)=> {
-        const result = await callEndpoint(CreateTipoAlojamiento(data));
+        await callEndpoint(CreateTipoAlojamiento(data));
     };
 
+    const update = async (id:number,data:Partial<TipoAlojamiento>) =>{
+        await callEndpoint(UpdateTipoAlojamiento(id,data));
+    }
+
+    useEffect(()=>{
+        if(action === 'edit'){
+            getTipoAlojamiento();
+        }
+        return ()=>{
+
+        }
+    },[visible,data, action]);
 
 
     const handleSubmit = async () => {
@@ -32,12 +61,10 @@ const ModalTiposAlojamientos: FC<ModalTiposAlojamientosProps> = ({ closeModal, v
             result.cantidadDisponibles = Number(result.cantidadDisponibles);
             result.capacidadPersonas = Number(result.capacidadPersonas);
             result.valor = Number(result.valor);
-
-
             if (action =='add') {
                 await create(result);
             }else{
-
+                if(data.id) await update(data.id,result);
             }
             closeModal(true);
         }catch(e){
@@ -55,7 +82,6 @@ const ModalTiposAlojamientos: FC<ModalTiposAlojamientosProps> = ({ closeModal, v
         cantidadDisponibles: [{ required: true, message: 'La cantidad disponibles es requerida' }],
         valor: [{ required: true, message: 'El valor es requerido' }],
     }
-
 
     return (
         <Modal

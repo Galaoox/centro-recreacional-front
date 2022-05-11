@@ -4,4 +4,5 @@ export interface ActionButtonTable {
     action: () => void;
     icon: any;
     disabled: boolean;
+    loading: boolean;
 }
