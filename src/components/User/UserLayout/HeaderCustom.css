@@ -1,0 +1,253 @@
+header {
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    margin-bottom: auto;
+    width: 100%;
+    z-index: 10;
+}
+.grid {
+    max-width: none;
+    margin: 0;
+    grid-template-areas: "logo input cart account sigin";
+    grid-template-columns: 3fr 4fr 0.5fr 0.5fr 0.5fr;
+    height: 6rem;
+    width: 100%;
+}
+.search-bar {
+    padding: 1rem 3rem 4rem 3rem;
+
+    background-color: var(--white);
+}
+
+.menu-desktop {
+    height: 3.5rem;
+    color: var(--white);
+    background-color: var(--black);
+    display: flex;
+    justify-content: center;
+}
+
+.menu-desktop > ul {
+    display: flex;
+    align-items: center;
+}
+
+.menu-desktop > ul > li {
+    list-style: none;
+    font-weight: bold;
+    padding: 0 3rem;
+}
+.menu-desktop > ul > li > a {
+    text-decoration: none;
+    color: var(--white);
+}
+
+.menu-desktop > ul > li:nth-child(n + 1):nth-child(-n + 5) {
+    border-right: var(--white) solid 1px;
+}
+
+.title {
+    font-family: "Bebas Neue", cursive;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    font-size: 4rem;
+    font-weight: 100;
+    grid-area: logo;
+}
+.title > a {
+    text-decoration: none;
+    color: var(--black);
+}
+
+.input-group {
+    display: flex;
+    grid-area: input;
+    margin: auto;
+    height: 2.5rem;
+    width: 100%;
+}
+
+.cart {
+    grid-area: cart;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: auto;
+}
+
+.account {
+    grid-area: account;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: auto;
+}
+
+.btn-sigin {
+    grid-area: sigin;
+    border-radius: 0;
+    border: var(--black) solid 1px;
+    background-color: var(--white);
+    width: 8rem;
+    height: 2.5rem;
+    margin: auto;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: var(--background-input);
+    background-clip: padding-box;
+    border: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    outline: none;
+}
+
+.btn-search {
+    width: 2.5rem;
+    border-radius: 0;
+    border: 0;
+    background-color: #dedede;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-search:hover {
+    background-color: #a19e9e;
+}
+
+.icon-button {
+    width: 1rem;
+}
+
+.menu-mobile {
+    display: none;
+    grid-area: menu;
+}
+
+#hamburguer-menu {
+    display: none;
+    width: 90vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    background-color: var(--white);
+    box-shadow: 1px 0 3px 0 var(--light-black);
+    padding-left: 2rem;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.button-close-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.button-close-container > img {
+    width: 1.3rem;
+    margin: 1rem 1rem 0 0;
+    height: 1.3rem;
+}
+
+#hamburguer-menu > ul {
+    margin-top: 1rem;
+}
+
+#hamburguer-menu > ul > li {
+    list-style: none;
+    margin-bottom: 1rem;
+}
+
+#hamburguer-menu > ul > li > a {
+    color: var(--black);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
+    .title {
+        font-size: 3rem;
+    }
+
+    .search-bar {
+        padding: 1rem;
+    }
+
+    .menu-desktop > ul > li {
+        list-style: none;
+        font-weight: bold;
+        padding: 0 1rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    header {
+        box-shadow: 0px 0px 3px 0px var(--light-black);
+    }
+    .menu-desktop {
+        display: none;
+    }
+
+    .menu-mobile {
+        display: block;
+        width: 3rem;
+    }
+
+    .grid {
+        grid-template-areas:
+            "menu logo logo cart"
+            "input input input input";
+        grid-template-columns: none;
+        height: 7rem;
+        gap: 0px;
+    }
+    .title {
+        font-size: 2rem;
+    }
+
+    .search-bar {
+        padding: 0.5rem 1rem 0 1rem;
+    }
+
+    .cart {
+        width: 1.7rem;
+        height: 1.7rem;
+    }
+
+    .account {
+        display: none;
+    }
+
+    .btn-sigin {
+        display: none;
+    }
+    .input-group {
+        margin-bottom: 0.5rem;
+    }
+
+    #hamburguer-menu.show {
+        display: block;
+        opacity: 1;
+        animation: fadein 0.3s;
+    }
+}

@@ -15,7 +15,6 @@ const columns = [
     {
         title: 'Nombre',
         dataIndex: 'nombre',
-
     },
     {
         title: 'Descripcion',
@@ -81,7 +80,7 @@ const TableTiposAlojamientos = () => {
         setData(data);
     }
 
-    useAsync(getApiData, adaptTipoAlojamiento, () => {});
+   
 
     const buttonsActions: ActionButtonTable[] = [
         {
@@ -110,10 +109,6 @@ const TableTiposAlojamientos = () => {
         },
     ]
 
-    const showModal = () => {
-        setVisibleForm(true);
-    }
-
     const reloadData = async ()=>{
         const result = await getApiData();
         adaptTipoAlojamiento(result.data);
@@ -123,7 +118,7 @@ const TableTiposAlojamientos = () => {
         if(val) reloadData();
         setVisibleForm(false);
     }
-
+    useAsync(getApiData, adaptTipoAlojamiento, () => {});
     return (
         <>
             <ActionsButtonsTable items={buttonsActions} />

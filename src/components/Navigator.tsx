@@ -20,6 +20,9 @@ import TiposAdicionesAlojamiento from "@pages/Admin/TiposAdicionesAlojamiento"
 import TiposEntradas from "@pages/Admin/TiposEntradas"
 import Dashboard from "@pages/Admin/Dashboard"
 import { LoadingProvider } from './providers/LoadingProvider';
+import Membresia from "@pages/User/Membresia"
+import Hospedaje from "@pages/User/Hospedaje"
+import Entradas from "@pages/User/Entradas"
 
 export const Navigator = () => {
     return (
@@ -35,6 +38,11 @@ export const Navigator = () => {
                         <Route path="horarios" element={<Horarios />} />
                         <Route path="restaurante" element={<Restaurante />} />
                         <Route path="atracciones" element={<Atracciones />} />
+                        <Route path="membresia" element={<Membresia />} />
+                        <Route path="hospedaje" element={<Hospedaje />} />
+                        <Route path="entradas" element={<Entradas />} />
+
+
                     </Route>
                     <Route path="admin" element={
                         // <RequireAuth>

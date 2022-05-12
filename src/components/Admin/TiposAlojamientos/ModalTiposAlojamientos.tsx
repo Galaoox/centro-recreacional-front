@@ -52,7 +52,7 @@ const ModalTiposAlojamientos: FC<ModalTiposAlojamientosProps> = ({ closeModal, v
         return ()=>{
 
         }
-    },[visible,data, action]);
+    },[]);
 
 
     const handleSubmit = async () => {
@@ -68,7 +68,7 @@ const ModalTiposAlojamientos: FC<ModalTiposAlojamientosProps> = ({ closeModal, v
             }
             closeModal(true);
         }catch(e){
-
+            console.log(e);
         }
     }
 
@@ -119,6 +119,7 @@ const ModalTiposAlojamientos: FC<ModalTiposAlojamientosProps> = ({ closeModal, v
                             <Input type="number" required min={0} />
                         </Form.Item>
                     </Col>
+                    
                     <Col span={12}>
                         <Form.Item name='cantidadDisponibles' label="Cantidad" rules={rulesForm.cantidadDisponibles}>
                             <Input type="number" required min={0} />
