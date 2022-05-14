@@ -1,36 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400;1,500&display=swap");
-
-
-body {
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
-        Helvetica, Arial, "Lucida Grande", sans-serif;
+#user-layout{
+    display:grid;
+    height: 100vh;
+    grid-template-rows: auto 2fr auto;
+    grid-template-columns: 100%;
 }
 
-:root {
-    --purple: #5b17aa;
-    --white: #ffffff;
-    --black: #000000;
-    --white-little-gray: #f4f4f4;
-    --light-black: #6b6b6b;
-    --grey: #e6e6e6;
-    --slightly-light-black: #000000b8;
-    --background-input: #eeeeee;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    width: 90%;
-    max-width: 1100px;
-    height: 100%;
-    margin: auto;
-    gap: 10px;
-    overflow: hidden;
-}
-
-@media screen and (max-width: 480px) {
-    .grid {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    }
+#user-content{
+    background-color: #fff;
+    padding: 1rem 2rem;
 }
