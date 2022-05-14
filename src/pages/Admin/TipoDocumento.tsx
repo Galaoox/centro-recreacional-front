@@ -2,7 +2,7 @@ import React from 'react'
 
 const TipoDocumento = () => {
   return (
-    <div>TipoDocumento</div>
+    <div>Tipo Documento</div>
   )
 }
 
