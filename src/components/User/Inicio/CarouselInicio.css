@@ -1,0 +1,11 @@
+.carousel-image{
+    width: fit-content;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.carousel--background-color{
+    background-color: #000;
+    text-align: center;
+} 

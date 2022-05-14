@@ -29,7 +29,6 @@ const AdminLayout = () => {
                     <Menu
                         theme="dark"
                         mode="inline"
-                        defaultSelectedKeys={['1']}
                         items={routesAdmin.map((route, index) => {
                             return  {
                                 key: index,
