@@ -1,54 +1,52 @@
+import { Layout, Menu } from "antd";
+import type { MenuProps } from 'antd';
 import { Link } from "react-router-dom";
+const { Header, Footer, Sider, Content } = Layout;
 import './HeaderCustom.css';
+import { createElement } from "react";
+
+
+function createLink(path: string, text: string) {
+    return <Link to={path}>{text}</Link>
+}
+function createImage(){
+    return <img src="https://via.placeholder.com/100x30" alt="logo" />
+}
+
+const items: MenuProps['items'] = [
+    { label: createImage(), key: 'imagen' },
+
+    { label: createLink('/', 'Inicio'), key: 'inicio' },
+    { label: createLink('/atracciones', 'Atracciones'), key: 'atracciones' }, 
+    { label: createLink('/horarios', 'Horarios'), key: 'horarios' }, 
+    { label: createLink('/restaurante', 'Restaurante'), key: 'restaurante' }, 
+    { label: createLink('/membresia', 'Membresia'), key: 'membresia' }, 
+    {
+      label: 'Reservas',
+      key: 'reservas',
+      children: [
+          { label: createLink('/hospedaje', 'Hospedaje'), key: 'hospedaje' },
+          { label: createLink('/entradas', 'Entradas'), key: 'entradas' },
+    ],
+    },
+  ];
 
 const HeaderCustom = () => {
+
+
     return (
         <>
-<header>
-  <nav className="grid search-bar">
-    <img  className="menu-mobile" src="/assets/img/menu-mobile.svg" alt="" />
-    <h1 className="title"><Link to="/">CentroRecreacional</Link></h1>
 
-    <img className="account" src="/assets/img/icon-user.svg" alt="" />
-    <button type="button" className="btn-sigin">Iniciar sesión</button>
-  </nav>
-  <nav className="menu-desktop">
-    <ul>
-      <li><a href="#">Inicio</a></li>
-      <li><a href="#">Atracciones</a></li>
-      <li><a href="#">Horarios</a></li>
-      <li><a href="#">Restaurante</a></li>
-      <li><a href="#">Membresia</a></li>
-      <li><a href="#">Hospedaje</a></li>
-      <li><a href="#">Entradas</a></li>
-    </ul>
-  </nav>
-</header>
-
-
-{/* <div id="hamburguer-menu" #hamburguerMenu>
-    <div class="button-close-container">
-        <img src="/assets/img/icon-close.svg" #closeIcon alt="">
-    </div>
-    <ul>
-        <li><a href="#">Hombre</a></li>
-        <li><a href="#">Mujer</a></li>
-        <li><a href="#">Junior</a></li>
-        <li><a href="#">Niños</a></li>
-        <li><a href="#">Accesorios</a></li>
-        <li><a href="#">Ofertas</a></li>
-    </ul>
-</div> */}
-
+            <Header id="header-user" className='header--no-padding header--auto-height header--background-white'>
+                {/* <div id="container-image-header">
+                    
+                </div> */}
+                <Menu id="menu-user" className="menu--align-center menu--background--blue" items={items} mode="horizontal" />
+            </Header>
         </>
     )
 }
 
-const style = {
-    menuCustom: {
-        display: 'flex',
-        justifyContent: 'center',
-    }
-}
+
 
 export default HeaderCustom

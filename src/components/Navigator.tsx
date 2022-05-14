@@ -4,7 +4,6 @@ import CategoriasMenu from "@pages/Admin/CategoriasMenu"
 import TiposAlojamientos from "@pages/Admin/TiposAlojamientos"
 import Atracciones from "@pages/User/Atracciones"
 import Horarios from "@pages/User/Horarios"
-import Index from "@pages/User/Index"
 import Login from "@pages/User/Login"
 import Register from "@pages/User/Register"
 import Restaurante from "@pages/User/Restaurante"
@@ -23,15 +22,20 @@ import { LoadingProvider } from './providers/LoadingProvider';
 import Membresia from "@pages/User/Membresia"
 import Hospedaje from "@pages/User/Hospedaje"
 import Entradas from "@pages/User/Entradas"
+import { Suspense } from "react"
+import RequireAuth from "@guards/RequireAuth"
+import Inicio from "@pages/User/Inicio"
 
 export const Navigator = () => {
     return (
         <LoadingProvider>
             <AuthProvider>
                 <Routes>
-                    <Route path="/" element={<UserLayout />}>
+                    <Route path="/" element={
+                        <Suspense><UserLayout /></Suspense>
+                    }>
                         <Route index element={
-                            <Index />
+                            <Inicio />
                         } />
                         <Route path="inicio-sesion" element={<Login />} />
                         <Route path="registro" element={<Register />} />
@@ -45,11 +49,14 @@ export const Navigator = () => {
 
                     </Route>
                     <Route path="admin" element={
-                        // <RequireAuth>
-                        // <RequireIsAdmin>
-                        <AdminLayout />
-                        // </RequireIsAdmin>
-                        // </RequireAuth>
+                        <Suspense>
+                            {/* <RequireAuth>
+                                <RequireIsAdmin>
+                                </RequireIsAdmin>
+                            </RequireAuth> */}
+                            <AdminLayout />
+                        </Suspense>
+
                     }>
 
                         <Route index element={<Dashboard />} />
