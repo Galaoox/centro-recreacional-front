@@ -1,10 +1,14 @@
 #user-layout{
-    display:grid;
-    height: 100vh;
-    grid-template-rows: auto 2fr auto;
-    grid-template-columns: 100%;
+    position: relative;
+    min-height: 100vh;
+    padding-bottom: 27rem;
 }
 
+#user-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
 #user-content{
     background-color: #fff;
     padding: 1rem 2rem;
