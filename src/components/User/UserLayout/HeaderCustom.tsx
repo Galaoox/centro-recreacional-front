@@ -1,16 +1,15 @@
 import { Layout, Menu } from "antd";
 import type { MenuProps } from 'antd';
 import { Link } from "react-router-dom";
-const { Header, Footer, Sider, Content } = Layout;
+const { Header } = Layout;
 import './HeaderCustom.css';
-import { createElement } from "react";
-
+import logo from '@assets/logo.png';
 
 function createLink(path: string, text: string) {
     return <Link to={path}>{text}</Link>
 }
 function createImage(){
-    return <img src="https://via.placeholder.com/100x30" alt="logo" />
+    return <img src={logo} id="logo" alt="logo" />
 }
 
 const items: MenuProps['items'] = [

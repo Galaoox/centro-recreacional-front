@@ -1,11 +1,14 @@
 .carousel-image{
-    width: fit-content;
+    width: 1000px;
+    height: 500px;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+    display:block;
+    margin:auto;
 }
 
 .carousel--background-color{
-    background-color: #000;
+    background-color: rgba(0, 115, 255, 0.2);
     text-align: center;
 } 
