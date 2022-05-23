@@ -37,12 +37,16 @@
 #menu-user 
 .ant-menu-item-selected::after,
 #menu-user 
+.ant-menu-submenu-open::after {
+    border-bottom: none;
+}
+
+#menu-user 
 .ant-menu-item-selected:hover::after,
 #menu-user
-.ant-menu-item-active:hover::after,
-#menu-user 
-.ant-menu-submenu-open::after {
+.ant-menu-item-active:hover::after{
     border-bottom: 2px solid #fff;
+
 }
 
 #container-image-header{
@@ -51,4 +55,8 @@
     align-items: center;
     padding: 1rem 0;
     background-color: #0c7ce6;
+}
+
+#logo{
+    width: 100px;
 }
