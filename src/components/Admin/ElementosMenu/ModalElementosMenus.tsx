@@ -57,8 +57,6 @@ const ModalElementosMenus: FC<ModalElementosMenusProps> = ({ closeModal, visible
     const handleSubmit = async () => {
         try{
             let result = await form.validateFields();
-            result.cantidadDisponibles = Number(result.cantidadDisponibles);
-            result.capacidadPersonas = Number(result.capacidadPersonas);
             result.valor = Number(result.valor);
             if (action =='add') {
                 await create(result);
