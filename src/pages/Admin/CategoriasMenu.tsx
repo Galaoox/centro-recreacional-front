@@ -1,9 +1,18 @@
-import React from 'react'
+
+import { Typography } from 'antd';
+import TableCategoriasMenu from '@components/Admin/CategoriasMenu/TableCategoriasMenu';
+
+const { Title } = Typography;
+
 
 const CategoriasMenu = () => {
   return (
-    <div>CategoriasMenu</div>
+    <>
+        <Title level={1}>Categorías Menú</Title>
+        <TableCategoriasMenu/>
+    </>
   )
 }
+
 
 export default CategoriasMenu
