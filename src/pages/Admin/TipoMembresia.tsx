@@ -1,9 +1,16 @@
-import React from 'react'
+import { Typography } from 'antd';
+import TableTiposMembresia from '@components/Admin/TiposMembresias/TableTiposMembresia';
 
-const TipoMembresia = () => {
+const { Title } = Typography;
+
+
+const TiposMembresia = () => {
   return (
-    <div>TipoMembresia</div>
+    <>
+        <Title level={1}>Tipos de Membresia</Title>
+        <TableTiposMembresia />
+    </>
   )
 }
 
-export default TipoMembresia
+export default TiposMembresia

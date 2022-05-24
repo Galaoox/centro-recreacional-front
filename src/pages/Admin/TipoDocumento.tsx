@@ -1,9 +1,16 @@
-import React from 'react'
+import { Typography } from 'antd';
+import TableTiposDocumento from '@components/Admin/TiposDocumento/TableTiposDocumento';
 
-const TipoDocumento = () => {
+const { Title } = Typography;
+
+
+const TiposDocumento = () => {
   return (
-    <div>Tipo Documento</div>
+    <>
+        <Title level={1}>Tipos de documento</Title>
+        <TableTiposDocumento />
+    </>
   )
 }
 
-export default TipoDocumento
+export default TiposDocumento
