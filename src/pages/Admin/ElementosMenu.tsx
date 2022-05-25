@@ -1,8 +1,15 @@
-import React from 'react'
+import { Typography } from 'antd';
+import TableElementosMenus from '@components/Admin/ElementosMenu/TableElementosMenus';
+
+const { Title } = Typography;
+
 
 const ElementosMenu = () => {
   return (
-    <div>ElementosMenu</div>
+    <>
+        <Title level={1}>Elementos Menú</Title>
+        <TableElementosMenus/>
+    </>
   )
 }
 

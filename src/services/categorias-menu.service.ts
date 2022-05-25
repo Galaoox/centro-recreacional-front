@@ -1,14 +1,14 @@
 import { API } from "@config/env";
-import { Horarios } from "@models/horarios";
+import { CategoriasMenu } from "@models/categorias-menu";
 import { loadAbort } from "@utilities/load-abort-axios.utility"
 import axios from "axios";
 
 
-export function GetAllHorarios(){
+export function GetAllCategoriasMenu(){
     const controller = loadAbort();
 
     return {
-        call: axios.get<Horarios[]>(`${API}/horarios`, {
+        call: axios.get<CategoriasMenu[]>(`${API}/categorias-menu`, {
             signal: controller.signal
         }),
         controller
@@ -16,31 +16,31 @@ export function GetAllHorarios(){
 }
 
 
-export function GetHorarios(id:number){
+export function GetCategoriasMenu(id:number){
     const controller = loadAbort();
 
     return {
-        call: axios.get<Horarios>(`${API}/horarios/${id}`, {
+        call: axios.get<CategoriasMenu>(`${API}/categorias-menu/findOne/${id}`, {
             signal: controller.signal
         }),
         controller
     }
 }
 
-export function CreateHorarios(data: Partial<Horarios>){
+export function CreateCategoriasMenu(data: Partial<CategoriasMenu>){
     const controller = loadAbort();
     return {
-        call: axios.post<Horarios>(`${API}/horarios`,data, {
+        call: axios.post<CategoriasMenu>(`${API}/categorias-menu`,data, {
             signal: controller.signal,
         }),
         controller
     }
 }
 
-export function UpdateHorarios(id: number,data: Partial<Horarios>){
+export function UpdateCategoriasMenu(id: number,data: Partial<CategoriasMenu>){
     const controller = loadAbort();
     return {
-        call: axios.put<Horarios>(`${API}/horarios/${id}`,data, {
+        call: axios.put<CategoriasMenu>(`${API}/categorias-menu/${id}`,data, {
             signal: controller.signal,
         }),
         controller
@@ -48,10 +48,10 @@ export function UpdateHorarios(id: number,data: Partial<Horarios>){
 }
 
 
-export function DeleteHorarios(id: number){
+export function DeleteCategoriasMenu(id: number){
     const controller = loadAbort();
     return {
-        call: axios.delete<any>(`${API}/horarios/${id}`,{
+        call: axios.delete<any>(`${API}/categorias-menu/${id}`,{
             signal: controller.signal,
         }),
         controller

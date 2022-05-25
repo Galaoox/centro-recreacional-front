@@ -1,14 +1,14 @@
 import { API } from "@config/env";
-import { Horarios } from "@models/horarios";
+import { TipoMembresia } from '@models/tipo-membresia';
 import { loadAbort } from "@utilities/load-abort-axios.utility"
 import axios from "axios";
 
 
-export function GetAllHorarios(){
+export function GetAllTiposMembresia(){
     const controller = loadAbort();
 
     return {
-        call: axios.get<Horarios[]>(`${API}/horarios`, {
+        call: axios.get<TipoMembresia[]>(`${API}/tipos-membresia`, {
             signal: controller.signal
         }),
         controller
@@ -16,31 +16,31 @@ export function GetAllHorarios(){
 }
 
 
-export function GetHorarios(id:number){
+export function GetTipoMembresia(id:number){
     const controller = loadAbort();
 
     return {
-        call: axios.get<Horarios>(`${API}/horarios/${id}`, {
+        call: axios.get<TipoMembresia>(`${API}/tipos-membresia/findOne/${id}`, {
             signal: controller.signal
         }),
         controller
     }
 }
 
-export function CreateHorarios(data: Partial<Horarios>){
+export function CreateTipoMembresia(data: Partial<TipoMembresia>){
     const controller = loadAbort();
     return {
-        call: axios.post<Horarios>(`${API}/horarios`,data, {
+        call: axios.post<TipoMembresia>(`${API}/tipos-membresia`,data, {
             signal: controller.signal,
         }),
         controller
     }
 }
 
-export function UpdateHorarios(id: number,data: Partial<Horarios>){
+export function UpdateTipoMembresia(id: number,data: Partial<TipoMembresia>){
     const controller = loadAbort();
     return {
-        call: axios.put<Horarios>(`${API}/horarios/${id}`,data, {
+        call: axios.put<TipoMembresia>(`${API}/tipos-membresia/${id}`,data, {
             signal: controller.signal,
         }),
         controller
@@ -48,13 +48,12 @@ export function UpdateHorarios(id: number,data: Partial<Horarios>){
 }
 
 
-export function DeleteHorarios(id: number){
+export function DeleteTipoMembresia(id: number){
     const controller = loadAbort();
     return {
-        call: axios.delete<any>(`${API}/horarios/${id}`,{
+        call: axios.delete<any>(`${API}/tipos-membresia/${id}`,{
             signal: controller.signal,
         }),
         controller
     }
 }
-

@@ -1,9 +1,16 @@
-import React from 'react'
+import { Typography } from 'antd';
+import TableHorarios from '@components/Admin/Horarios/TableHorarios';
 
-const HorariosAdmin = () => {
+const { Title } = Typography;
+
+
+const Horarios = () => {
   return (
-    <div>HorariosAdmin</div>
+    <>
+        <Title level={1}>Horarios</Title>
+        <TableHorarios />
+    </>
   )
 }
 
-export default HorariosAdmin
+export default Horarios
