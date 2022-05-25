@@ -17,7 +17,7 @@ const columns = [
         dataIndex: 'nombre',
     },
     {
-        title: 'Descripcion',
+        title: 'Descripción',
         dataIndex: 'descripcion',
     },
 

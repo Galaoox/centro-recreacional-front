@@ -20,7 +20,7 @@ export function GetCategoriasMenu(id:number){
     const controller = loadAbort();
 
     return {
-        call: axios.get<CategoriasMenu>(`${API}/categorias-menu/findOne/${id}`, {
+        call: axios.get<CategoriasMenu>(`${API}/categorias-menu/${id}`, {
             signal: controller.signal
         }),
         controller
