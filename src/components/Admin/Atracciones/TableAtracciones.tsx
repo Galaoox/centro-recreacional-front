@@ -3,11 +3,11 @@ import ActionsButtonsTable from '@components/ActionsButtonsTable';
 import { useAsync } from '@hooks/useAsync';
 import useFetchAndLoad from '@hooks/useFetchAndLoad';
 import { ActionButtonTable } from '@models/action-button-table.model';
-import { CategoriasMenu } from "@models/categorias-menu";
-import { DeleteCategoriasMenu, GetAllCategoriasMenu } from '@services/categorias-menu.service';
+import { atracciones } from "@models/atracciones";
+import { DeleteAtracciones, GetAllAtracciones } from '@services/atracciones.service';
 import { Modal, Table } from 'antd';
 import { useState } from 'react';
-import ModalCategoriasMenu from './ModalCategoriasMenu';
+import ModalAtracciones from './ModalAtracciones';
 
 const { confirm } = Modal;
 
@@ -23,16 +23,16 @@ const columns = [
 
 ];
 
-const TableCategoriasMenu = () => {
+const TableAtracciones = () => {
     const { loading, callEndpoint } = useFetchAndLoad();
-    const [data, setData] = useState<CategoriasMenu[]>([]);
+    const [data, setData] = useState<atracciones[]>([]);
     const [selection, setSelection] = useState<any>(null);
     const [visibleForm, setVisibleForm] = useState<boolean>(false);
     const [action, setAction] = useState<string>('');
 
-    const getApiData = async () => await callEndpoint(GetAllCategoriasMenu());
+    const getApiData = async () => await callEndpoint(GetAllAtracciones());
 
-    const handleChangeRowSelection = (selectedRowKeys: React.Key[], selectedRows: CategoriasMenu[]) => {
+    const handleChangeRowSelection = (selectedRowKeys: React.Key[], selectedRows: atracciones[]) => {
         setSelection(selectedRows[0] ? selectedRows[0] : null);
     };
 
@@ -47,7 +47,7 @@ const TableCategoriasMenu = () => {
     }
 
     const remove = async()=>{
-        await callEndpoint(DeleteCategoriasMenu(selection.id));
+        await callEndpoint(DeleteAtracciones(selection.id));
         await reloadData();
     }
 
@@ -65,7 +65,7 @@ const TableCategoriasMenu = () => {
           });
         
     }
-    const adaptCategoriasMenu = (data:any)=>{
+    const adaptAtracciones = (data:any)=>{
         setData(data);
     }
 
@@ -100,14 +100,14 @@ const TableCategoriasMenu = () => {
 
     const reloadData = async ()=>{
         const result = await getApiData();
-        adaptCategoriasMenu(result.data);
+        adaptAtracciones(result.data);
     }
 
     const closeModal = async (val: boolean) => {
         if(val) reloadData();
         setVisibleForm(false);
     }
-    useAsync(getApiData, adaptCategoriasMenu, () => {});
+    useAsync(getApiData, adaptAtracciones, () => {});
     return (
         <>
             <ActionsButtonsTable items={buttonsActions} />
@@ -123,7 +123,7 @@ const TableCategoriasMenu = () => {
             />
             
             {
-                visibleForm && (<ModalCategoriasMenu closeModal={closeModal}  visible={visibleForm} action={action} data={selection} />)
+                visibleForm && (<ModalAtracciones closeModal={closeModal}  visible={visibleForm} action={action} data={selection} />)
             }
         </>
     )
@@ -133,5 +133,5 @@ const TableCategoriasMenu = () => {
 
 
 
-export default TableCategoriasMenu
+export default TableAtracciones
 
