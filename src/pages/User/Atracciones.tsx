@@ -1,9 +1,9 @@
-import { URL_ASSETS } from '@config/env';
 import { useAsync } from '@hooks/useAsync';
 import useFetchAndLoad from '@hooks/useFetchAndLoad';
 import { GetAllAtracciones } from '@services/atracciones.service';
 import { Card, List, Typography } from 'antd';
 import  { useState } from 'react'
+import './Atracciones.css';
 
 const { Title } = Typography;
 const { Meta } = Card;
@@ -40,7 +40,7 @@ const Atracciones = () => {
                 renderItem={(item: any) => (
                     <List.Item>
                         <Card 
-                            cover={<img alt="example" src={URL_ASSETS +"/"+ item.imagen} />}
+                            cover={<img alt="example" className='img-atraccion' src={item.imagen} />}
                         >
                             <Meta title={item.nombre} description={item.descripcion} />
                         </Card>

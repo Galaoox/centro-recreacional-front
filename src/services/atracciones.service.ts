@@ -7,7 +7,7 @@ export function GetAllAtracciones(){
     const controller = loadAbort();
 
     return {
-        call: axios.get<atracciones[]>(`${API}atracciones`, {
+        call: axios.get<any[]>(`${API}/atracciones`, {
             signal: controller.signal
         }),
         controller
