@@ -67,8 +67,6 @@ export const Navigator = () => {
                         <Route path="horarios" element={<HorariosAdmin />} />
                         <Route path="tipos-documento" element={<TipoDocumento />} />
                         <Route path="tipos-membresia" element={<TipoMembresia />} />
-                        <Route path="tipos-adiciones-alojamientos" element={<TiposAdicionesAlojamiento />} />
-                        <Route path="tipos-alojamientos" element={<TiposAlojamientos />} />
                         <Route path="tipos-entradas" element={<TiposEntradas />} />
 
                     </Route>
