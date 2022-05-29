@@ -58,3 +58,12 @@ export function DeleteElementoMenu(id: number){
     }
 }
 
+export function UploadImageElementosMenu(id: number, data: any){
+    const controller = loadAbort();
+    return {
+        call: axios.post<any>(`${API}/elementos-menu/upload/${id}`,data,{
+            signal: controller.signal,
+        }),
+        controller
+    }
+}

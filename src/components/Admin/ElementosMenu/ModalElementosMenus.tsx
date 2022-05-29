@@ -2,7 +2,8 @@ import { useAsync } from '@hooks/useAsync';
 import useFetchAndLoad from '@hooks/useFetchAndLoad';
 import { ElementoMenu } from "@models/elemento-menu";
 import { GetAllCategoriasMenu } from '@services/categorias-menu.service';
-import { CreateElementoMenu, GetElementoMenu, UpdateElementoMenu } from '@services/elementos-menu.service';
+import { CreateElementoMenu, GetElementoMenu, UpdateElementoMenu, UploadImageElementosMenu } from '@services/elementos-menu.service';
+import { getBase64 } from '@utilities/file-upload.utility';
 import { Modal, Button, Form, Input, Row, Col, Select } from 'antd';
 import { FC, useEffect, useState } from 'react';
 
@@ -21,15 +22,16 @@ const ModalElementosMenus: FC<ModalElementosMenusProps> = ({ closeModal, visible
     const [form] = Form.useForm();
     const { loading, callEndpoint } = useFetchAndLoad();
     const [listCategorias, setListCategorias] = useState<any[]>([]);
+    const [selectedFile, setSelectedFile] = useState();
 
     const getElementoMenuApi = async (id: number) => await callEndpoint(GetElementoMenu(id));
 
-    const adaptElementoMenu = (data: ElementoMenu) => {
+    const adaptElementoMenu = (data: any) => {
         form.setFieldsValue({
             nombre: data.nombre,
             descripcion: data.descripcion,
             valor: data.valor,
-            categoriaMenuId: data.categoriaMenuId,
+            categoriaMenuId: data.categoriaMenu.id,
         })
     }
 
@@ -41,11 +43,21 @@ const ModalElementosMenus: FC<ModalElementosMenusProps> = ({ closeModal, visible
     }
 
     const create = async (data: ElementoMenu) => {
-        await callEndpoint(CreateElementoMenu(data));
+        return await callEndpoint(CreateElementoMenu(data));
     };
 
     const update = async (id: number, data: Partial<ElementoMenu>) => {
         await callEndpoint(UpdateElementoMenu(id, data));
+    }
+
+    const uploadImage = async (id: number) => {
+        if (id && selectedFile) {
+            const file = await getBase64(selectedFile);
+            if (file) {
+                const data = { image: file }
+                await callEndpoint(UploadImageElementosMenu(id, data));
+            }
+        }
     }
 
     useEffect(() => {
@@ -60,13 +72,17 @@ const ModalElementosMenus: FC<ModalElementosMenusProps> = ({ closeModal, visible
 
     const handleSubmit = async () => {
         try {
+            let id = null;
             let result = await form.validateFields();
             result.valor = Number(result.valor);
             if (action == 'add') {
-                await create(result);
+                const resultCreate = await create(result);
+                id = resultCreate.data.id;
             } else {
                 if (data.id) await update(data.id, result);
+                id = data.id;
             }
+            await uploadImage(id);
             closeModal(true);
         } catch (e) {
             console.log(e);
@@ -91,6 +107,9 @@ const ModalElementosMenus: FC<ModalElementosMenusProps> = ({ closeModal, visible
 
     useAsync(getDataListCategoria, adaptListCategoria, () => { });
 
+    const changeHandler = (event: any) => {
+        setSelectedFile(event.target.files[0]);
+    };
 
     return (
         <Modal
@@ -128,8 +147,12 @@ const ModalElementosMenus: FC<ModalElementosMenusProps> = ({ closeModal, visible
 
                 <Form.Item name='categoriaMenuId' label="Categoría" rules={rulesForm.categoriaMenuId}>
                     <Select style={{ width: '100%' }} >
-                        {listCategorias.map((item: any) => (<Option value={item.id}>{item.nombre}</Option>))}
+                        {listCategorias.map((item: any) => (<Option key={item.id} value={item.id}>{item.nombre}</Option>))}
                     </Select>
+                </Form.Item>
+
+                <Form.Item label="Imagen" >
+                    <Input type={'file'} onChange={changeHandler} />
                 </Form.Item>
 
 
@@ -137,10 +160,6 @@ const ModalElementosMenus: FC<ModalElementosMenusProps> = ({ closeModal, visible
             </Form>
         </Modal>
     )
-}
-
-const style = {
-
 }
 
 export default ModalElementosMenus

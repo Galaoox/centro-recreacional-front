@@ -1,13 +1,8 @@
-import UploadCustom from '@components/UploadCustom';
-import { useAsync } from '@hooks/useAsync';
 import useFetchAndLoad from '@hooks/useFetchAndLoad';
 import { TipoAlojamiento } from '@models/tipo-alojamiento';
 import { CreateTipoAlojamiento, GetTipoAlojamiento, UpdateTipoAlojamiento, UploadImageTipoAlojamiento } from '@services/tipos-alojamiento.service';
 import { Modal, Button, Form, Input, Row, Col, Upload } from 'antd';
 import { FC, useEffect, useState } from 'react';
-import type { RcFile } from 'antd/es/upload/interface';
-import { UploadOutlined } from '@ant-design/icons';
-import { UploadFile } from 'antd/lib/upload/interface';
 import { getBase64 } from '@utilities/file-upload.utility';
 
 interface ModalTiposAlojamientosProps {
@@ -45,7 +40,6 @@ const ModalTiposAlojamientos: FC<ModalTiposAlojamientosProps> = ({ closeModal, v
 
     const uploadImage = async (id: number) => {
         if (id && selectedFile) {
-            console.log(selectedFile);
             const file = await getBase64(selectedFile);
             if(file){
                 const data = {image: file}
@@ -157,11 +151,7 @@ const ModalTiposAlojamientos: FC<ModalTiposAlojamientosProps> = ({ closeModal, v
                 </Form.Item>
 
                 <Form.Item label="Imagen" >
-                    {/* <Upload listType="picture"  maxCount={1} customRequest={()=> {}}   >
-                        <Button icon={<UploadOutlined />}>imagen</Button>
-                    </Upload> */}
                     <Input type={'file'} onChange={changeHandler} />
-                    {/* <UploadCustom text="subir imagen" fileList={fileList} setFileList={setFileList} /> */}
                 </Form.Item>
 
             </Form>
