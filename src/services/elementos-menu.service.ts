@@ -67,3 +67,15 @@ export function UploadImageElementosMenu(id: number, data: any){
         controller
     }
 }
+
+
+export function GetAllElementoMenuGrouped(){
+    const controller = loadAbort();
+
+    return {
+        call: axios.get<any[]>(`${API}/elementos-menu/grouped`, {
+            signal: controller.signal
+        }),
+        controller
+    }
+}
