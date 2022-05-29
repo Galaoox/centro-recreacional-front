@@ -32,10 +32,6 @@ export const routesAdmin = [
         title: 'Tipos de membresia',
     },
     {
-        path: 'tipos-alojamientos',
-        title: 'Tipos de alojamientos',
-    },
-    {
         path: 'tipos-adiciones-alojamientos',
         title: 'Tipos de adiciones de alojamientos',
     },
