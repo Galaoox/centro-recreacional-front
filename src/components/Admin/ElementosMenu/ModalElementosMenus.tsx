@@ -1,9 +1,12 @@
 import { useAsync } from '@hooks/useAsync';
 import useFetchAndLoad from '@hooks/useFetchAndLoad';
 import { ElementoMenu } from "@models/elemento-menu";
+import { GetAllCategoriasMenu } from '@services/categorias-menu.service';
 import { CreateElementoMenu, GetElementoMenu, UpdateElementoMenu } from '@services/elementos-menu.service';
-import { Modal, Button, Form, Input, Row, Col } from 'antd';
-import { FC, useEffect } from 'react';
+import { Modal, Button, Form, Input, Row, Col, Select } from 'antd';
+import { FC, useEffect, useState } from 'react';
+
+const { Option } = Select;
 
 interface ModalElementosMenusProps {
     closeModal: (result: any) => void;
@@ -14,57 +17,58 @@ interface ModalElementosMenusProps {
 
 
 
-const ModalElementosMenus: FC<ModalElementosMenusProps> = ({ closeModal, visible, data,action  }) => {
+const ModalElementosMenus: FC<ModalElementosMenusProps> = ({ closeModal, visible, data, action }) => {
     const [form] = Form.useForm();
     const { loading, callEndpoint } = useFetchAndLoad();
+    const [listCategorias, setListCategorias] = useState<any[]>([]);
 
-    const getElementoMenuApi = async (id:number) => await callEndpoint(GetElementoMenu(id));
+    const getElementoMenuApi = async (id: number) => await callEndpoint(GetElementoMenu(id));
 
-    const adaptElementoMenu = (data: ElementoMenu)=>{
+    const adaptElementoMenu = (data: ElementoMenu) => {
         form.setFieldsValue({
             nombre: data.nombre,
             descripcion: data.descripcion,
             valor: data.valor,
             categoriaMenuId: data.categoriaMenuId,
-        }) 
+        })
     }
 
-    const getElementoMenu = async()=>{
-        if(data?.id && visible){
+    const getElementoMenu = async () => {
+        if (data?.id && visible) {
             const result = await getElementoMenuApi(data.id);
             adaptElementoMenu(result.data);
         }
     }
 
-    const create = async (data: ElementoMenu)=> {
+    const create = async (data: ElementoMenu) => {
         await callEndpoint(CreateElementoMenu(data));
     };
 
-    const update = async (id:number,data:Partial<ElementoMenu>) =>{
-        await callEndpoint(UpdateElementoMenu(id,data));
+    const update = async (id: number, data: Partial<ElementoMenu>) => {
+        await callEndpoint(UpdateElementoMenu(id, data));
     }
 
-    useEffect(()=>{
-        if(action === 'edit'){
+    useEffect(() => {
+        if (action === 'edit') {
             getElementoMenu();
         }
-        return ()=>{
+        return () => {
 
         }
-    },[]);
+    }, []);
 
 
     const handleSubmit = async () => {
-        try{
+        try {
             let result = await form.validateFields();
             result.valor = Number(result.valor);
-            if (action =='add') {
+            if (action == 'add') {
                 await create(result);
-            }else{
-                if(data.id) await update(data.id,result);
+            } else {
+                if (data.id) await update(data.id, result);
             }
             closeModal(true);
-        }catch(e){
+        } catch (e) {
             console.log(e);
         }
     }
@@ -78,6 +82,15 @@ const ModalElementosMenus: FC<ModalElementosMenusProps> = ({ closeModal, visible
         valor: [{ required: true, message: 'El valor es requerido' }],
         categoriaMenuId: [{ required: true, message: 'La categoria es requerida' }],
     }
+
+    const getDataListCategoria = async () => await callEndpoint(GetAllCategoriasMenu());
+
+    const adaptListCategoria = async (res: any) => {
+        setListCategorias(res);
+    }
+
+    useAsync(getDataListCategoria, adaptListCategoria, () => { });
+
 
     return (
         <Modal
@@ -110,14 +123,16 @@ const ModalElementosMenus: FC<ModalElementosMenusProps> = ({ closeModal, visible
                 </Form.Item>
 
                 <Form.Item name='valor' label="Valor" rules={rulesForm.valor}>
-                    <Input type="number" required min={1}    />
+                    <Input type="number" required min={1} />
                 </Form.Item>
 
                 <Form.Item name='categoriaMenuId' label="Categoría" rules={rulesForm.categoriaMenuId}>
-                    <Input type="number" required min={1}    />
+                    <Select style={{ width: '100%' }} >
+                        {listCategorias.map((item: any) => (<Option value={item.id}>{item.nombre}</Option>))}
+                    </Select>
                 </Form.Item>
 
-              
+
 
             </Form>
         </Modal>

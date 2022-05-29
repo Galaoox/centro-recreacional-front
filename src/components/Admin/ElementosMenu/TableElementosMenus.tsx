@@ -26,7 +26,7 @@ const columns = [
     },
     {
         title: 'Categoria',
-        dataIndex: 'categoriaMenuId',
+        dataIndex: 'categoriaMenuNombre',
     },
 ];
 
@@ -73,7 +73,10 @@ const TableElementosMenus = () => {
         
     }
     const adaptElementoMenu = (data:any)=>{
-        setData(data);
+        setData(data.map((item:any)=>{
+            item.categoriaMenuNombre = item.categoriaMenu.nombre;
+            return item;
+        }));
     }
 
    
