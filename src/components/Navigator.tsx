@@ -37,7 +37,7 @@ export const Navigator = () => {
                         <Route index element={
                             <Inicio />
                         } />
-                        <Route path="inicio-sesion"  element={<Login />} />
+                        <Route path="inicio-sesion" element={<Login />} />
                         <Route path="registro" element={<Register />} />
                         <Route path="horarios" element={<Horarios />} />
                         <Route path="restaurante" element={<Restaurante />} />
@@ -53,6 +53,7 @@ export const Navigator = () => {
                                 </RequireIsAdmin>
                             </RequireAuth> */}
                             <AdminLayout />
+
                         </Suspense>
 
                     }>
