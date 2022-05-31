@@ -1,9 +1,10 @@
 import { useAsync } from "@hooks/useAsync";
 import useFetchAndLoad from "@hooks/useFetchAndLoad";
-import { Card, List, Typography } from "antd";
+import { Button, Card, List, notification, Typography } from "antd";
 import { useState } from "react";
 import { GetAllTiposMembresia } from '../../services/tipos-membresia.service';
 import { GetTiposDescuentos } from '@services/tipos-membresia.service';
+import { CreateMembresia } from "@services/membresia.service";
 
 const { Title } = Typography;
 
@@ -28,7 +29,25 @@ const Membresia = () => {
         });
         setData(res);
     }
+    
+    const adquirirMembresia = async (membresia:any) => {
+        const start = new Date();
+        const end = new Date(start.getFullYear() + 1, start.getMonth(), start.getDate());
+        const data = {
+            valor: membresia.valor,
+            descuentos: membresia.descuentos,
+            fechaInicio: start,
+            fechaFin: end,
+            tipoMembresiaId: membresia.id,
+        };
+        await callEndpoint(CreateMembresia(data));
+        notification['success']({
+            message: 'Membresia adquirida correctamente',
+          });
+    }
+
     useAsync(getApiData, adapt, () => { });
+
     return (
         <>
             <Title level={1}>Membresias</Title>
@@ -70,6 +89,7 @@ const Membresia = () => {
                                 })
                             }
                             </div>
+                            <Button style={{width:'100%'}} type="primary" onClick={() => adquirirMembresia(item)} >{'Adquirir por: $'+item.valor}</Button>
                         </Card>
                     </List.Item>
                 )}

@@ -1,4 +1,4 @@
-import { Button, Card, Col, Form, Input, Row, Select, Divider, DatePicker } from 'antd';
+import { Button, Card, Col, Form, Input, Row, Select, Divider, DatePicker, notification } from 'antd';
 import './FormHospedaje.css';
 
 
@@ -9,6 +9,8 @@ import { useAsync } from '@hooks/useAsync';
 import useFetchAndLoad from '@hooks/useFetchAndLoad';
 import { GetAllTiposAdiciones } from '@services/tipos-adiciones-alojamiento.service';
 import { GetAllTiposAlojamiento } from '@services/tipos-alojamiento.service';
+import { CreateHospedaje } from '@services/hospedaje.service';
+import { GetMembresiaUsuario } from '@services/membresia.service';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -19,8 +21,12 @@ const FormHospedaje = () => {
     const [tiposAlojamiento, setTiposAlojamiento] = useState([]);
     const [tiposAdiciones, setTiposAdiciones] = useState([]);
     const [total, setTotal] = useState(0);
+    const [subtotal, setSubtotal] = useState(0);
+
     const [valorAlojamiento, setValorAlojamiento] = useState(0);
     const [valorAdiciones, setValorAdiciones] = useState(0);
+    const [membresia, setMembresia] = useState(null);
+
     const { loading, callEndpoint } = useFetchAndLoad();
     const rules = {
         'tipoAlojamientoId': [{ required: true, message: 'Seleccione un tipo de alojamiento' }],
@@ -32,14 +38,18 @@ const FormHospedaje = () => {
         const data = {
             cantidadDias: calcCantidadDias(values),
             tipoAlojamientoId: values.tipoAlojamientoId,
-            fechaInicio: values.fechas[0].format('YYYY-MM-DD'),
-            fechaFin: values.fechas[1].format('YYYY-MM-DD'),
+            fechaIngreso: values.fechas[0].toDate(),
+            fechaSalida: values.fechas[1].toDate(),
             numeroPersonas: Number(values.numeroPersonas),
             valor: calcValorTipoAlojamiento() / calcCantidadDias(values),
             valorTotal: calcValorTotal(),
-            adiciones: tiposAdiciones.filter(x => values.adiciones.includes(x)),
+            adiciones: tiposAdiciones.filter((tipo: any) => values.adiciones.includes(tipo.id)),
         }
-        console.log(data);
+        await callEndpoint(CreateHospedaje(data));
+        notification['success']({
+            message: 'Reserva realizada correctamente',
+        });
+        form.resetFields();
     };
 
     const calcCantidadDias = (values: any) => {
@@ -68,8 +78,17 @@ const FormHospedaje = () => {
         setTiposAlojamiento(res);
     }
 
+    const getMembresia = async () => await callEndpoint(GetMembresiaUsuario());
+
+    const adaptMembresia = async (res: any) => {
+        const descuento = res.descuentos.find((descuento: any) => descuento.type === 1);
+        if (descuento) setMembresia(descuento.value);
+    }
+
     useAsync(getListTiposAdiciones, adaptListTiposAdiciones, () => { });
     useAsync(getListTiposAlojamientos, adaptListTiposAlojamientos, () => { });
+    useAsync(getMembresia, adaptMembresia, () => { });
+
 
     const calcValorAdiciones = () => {
         const values = form.getFieldsValue();
@@ -90,14 +109,23 @@ const FormHospedaje = () => {
         return alojamiento ? alojamiento.valor * cantidadDias : 0;
     }
 
-    const calcValorTotal = () => {
+    const calcValorSubtotal = () => {
         return calcValorAdiciones() + calcValorTipoAlojamiento();
+    }
+
+    const calcValorTotal = () => {
+        if(membresia){
+            return calcValorSubtotal() - ((calcValorSubtotal() * membresia) / 100);
+        }
+        return calcValorSubtotal();
     }
 
     const calcValores = () => {
         setValorAdiciones(calcValorAdiciones());
         setValorAlojamiento(calcValorTipoAlojamiento());
+        setSubtotal(calcValorSubtotal());
         setTotal(calcValorTotal());
+
     }
 
 
@@ -134,8 +162,8 @@ const FormHospedaje = () => {
                         </Col>
 
                         <Col span={12}>
-                            <Form.Item  label="Cantidad de dias" >
-                                <Input type='number' value={calcCantidadDias(form.getFieldsValue())} disabled    />
+                            <Form.Item label="Cantidad de dias" >
+                                <Input type='number' value={calcCantidadDias(form.getFieldsValue())} disabled />
                             </Form.Item>
                         </Col>
 
@@ -165,10 +193,21 @@ const FormHospedaje = () => {
             <Card id="container-total-info">
                 <Title level={2}>Resumen</Title>
                 <Divider />
-                <Title level={4}>Tipo Alojamiento x Dias: ${valorAlojamiento}</Title>
+                <Title level={5}>Tipo Alojamiento x Dias: ${valorAlojamiento}</Title>
                 <Divider />
-                <Title level={4}>Adiciones: ${valorAdiciones}</Title>
+                <Title level={5}>Adiciones: ${valorAdiciones}</Title>
                 <Divider />
+                {
+                    membresia && (
+                        <div >
+                            <Title level={5}>Descuento: {membresia}%</Title>
+                            <Divider />
+                        </div>
+                    )
+                }
+
+                <Title level={4}>Subtotal: ${subtotal}</Title>
+
                 <Title level={4}>Total: ${total}</Title>
             </Card>
         </div>
