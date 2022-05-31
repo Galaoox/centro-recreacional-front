@@ -25,53 +25,66 @@ import Entradas from "@pages/User/Entradas"
 import { Suspense } from "react"
 import RequireAuth from "@guards/RequireAuth"
 import Inicio from "@pages/User/Inicio"
+import WithAxios from "./WithAxios"
+import Cuenta from "@pages/User/Cuenta"
 
 export const Navigator = () => {
     return (
         <LoadingProvider>
             <AuthProvider>
-                <Routes>
-                    <Route path="/" element={
-                        <Suspense><UserLayout /></Suspense>
-                    }>
-                        <Route index element={
-                            <Inicio />
-                        } />
-                        <Route path="inicio-sesion"  element={<Login />} />
-                        <Route path="registro" element={<Register />} />
-                        <Route path="horarios" element={<Horarios />} />
-                        <Route path="restaurante" element={<Restaurante />} />
-                        <Route path="atracciones" element={<Atracciones />} />
-                        <Route path="membresia" element={<Membresia />} />
-                        <Route path="hospedaje" element={<Hospedaje />} />
-                        <Route path="entradas" element={<Entradas />} />
-                    </Route>
-                    <Route path="admin" element={
-                        <Suspense>
-                            {/* <RequireAuth>
-                                <RequireIsAdmin>
-                                </RequireIsAdmin>
-                            </RequireAuth> */}
-                            <AdminLayout />
-                        </Suspense>
+                <WithAxios>
+                    <Routes>
+                        <Route path="/" element={
+                            <Suspense><UserLayout /></Suspense>
+                        }>
+                            <Route index element={
+                                <Inicio />
+                            } />
+                            <Route path="inicio-sesion" element={<Login />} />
+                            <Route path="registro" element={<Register />} />
+                            <Route path="horarios" element={<Horarios />} />
+                            <Route path="restaurante" element={<Restaurante />} />
+                            <Route path="atracciones" element={<Atracciones />} />
+                            <Route path="membresia" element={<Membresia />} />
+                            <Route path="hospedaje" element={<Hospedaje />} />
+                            <Route path="entradas" element={<Entradas />} />
+                            <Route path="cuenta" element={
+                                <RequireAuth>
+                                    <Cuenta />
+                                </RequireAuth>
+                            } />
 
-                    }>
+                        </Route>
+                        <Route path="admin" element={
+                            <Suspense>
+                                <RequireAuth>
+                                    <RequireIsAdmin>
+                                        <AdminLayout />
+                                    </RequireIsAdmin>
+                                </RequireAuth>
 
-                        <Route index element={<Dashboard />} />
-                        <Route path="tipos-alojamientos" element={<TiposAlojamientos />} />
-                        <Route path="atracciones" element={<AtraccionesAdmin />} />
-                        <Route path="categorias-menu" element={<CategoriasMenu />} />
-                        <Route path="elementos-menu" element={<ElementosMenu />} />
-                        <Route path="horarios" element={<HorariosAdmin />} />
-                        <Route path="tipos-documento" element={<TipoDocumento />} />
-                        <Route path="tipos-membresia" element={<TipoMembresia />} />
-                        <Route path="tipos-entradas" element={<TiposEntradas />} />
-                        <Route path="tipos-adiciones-alojamientos" element={<TiposAdicionesAlojamiento />} />
+                            </Suspense>
 
-                    </Route>
+                        }>
 
 
-                </Routes>
+                            <Route index element={<Dashboard />} />
+                            <Route path="tipos-alojamientos" element={<TiposAlojamientos />} />
+                            <Route path="atracciones" element={<AtraccionesAdmin />} />
+                            <Route path="categorias-menu" element={<CategoriasMenu />} />
+                            <Route path="elementos-menu" element={<ElementosMenu />} />
+                            <Route path="horarios" element={<HorariosAdmin />} />
+                            <Route path="tipos-documento" element={<TipoDocumento />} />
+                            <Route path="tipos-membresia" element={<TipoMembresia />} />
+                            <Route path="tipos-entradas" element={<TiposEntradas />} />
+                            <Route path="tipos-adiciones-alojamientos" element={<TiposAdicionesAlojamiento />} />
+
+
+                        </Route>
+
+
+                    </Routes>
+                </WithAxios>
             </AuthProvider>
         </LoadingProvider>
 

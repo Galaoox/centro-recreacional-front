@@ -7,7 +7,7 @@ export function GetAllTiposEntradas(){
     const controller = loadAbort();
 
     return {
-        call: axios.get<TiposEntradas[]>(`${API}tipos-entradas`, {
+        call: axios.get<TiposEntradas[]>(`${API}/tipos-entradas`, {
             signal: controller.signal
         }),
         controller

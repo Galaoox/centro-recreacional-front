@@ -1,7 +1,19 @@
+import { LoadingOutlined } from "@ant-design/icons";
 import { AuthContext } from "@context/AuthContext";
+import useFetchAndLoad from "@hooks/useFetchAndLoad";
 import { AuthInfo } from "@models/auth-info.model";
 import { fakeAuthProvider } from "@services/auth";
-import { ReactNode, useState } from "react";
+import { LoginUser, RegisterUser } from '@services/auth.service';
+import { Spin } from "antd";
+import { ReactNode, useEffect, useState } from "react";
+
+enum Roles {
+    ADMIN = 1,
+    USER = 2,
+}
+
+const antIcon = <LoadingOutlined style={{ fontSize: 100, color: 'blue' }} spin />;
+
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     let [user, setUser] = useState<AuthInfo>({
@@ -9,22 +21,63 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         accessToken: "",
         name: '',
     });
-  
-    let signin = (newUser: string, callback: VoidFunction) => {
-      return fakeAuthProvider.signin(() => {
-        setUser(new AuthInfo('test', newUser, newUser == 'admin'));
+    const [loadingUser, setloadingUser] = useState(true);
+    const { loading, callEndpoint } = useFetchAndLoad();
+
+
+
+    let signin = async (newUser: any, callback: VoidFunction) => {
+        const result = await callEndpoint(LoginUser(newUser));
+        const data = new AuthInfo(result.data.access_token, result.data.nombre, result.data.rol == Roles.ADMIN);
+        setUser(data);
+        localStorage.setItem('user', JSON.stringify(data));
         callback();
-      });
     };
-  
+
+    let register = async (newUser: string, callback: VoidFunction) => {
+        const result = await callEndpoint(RegisterUser(newUser));
+        const data = new AuthInfo(result.data.access_token, result.data.nombre, result.data.rol == Roles.ADMIN);
+        setUser(data);
+        localStorage.setItem('user', JSON.stringify(data));
+        callback();
+    };
+
     let signout = (callback: VoidFunction) => {
-      return fakeAuthProvider.signout(() => {
         setUser(new AuthInfo());
+        localStorage.setItem('user', JSON.stringify(new AuthInfo()));
         callback();
-      });
     };
-  
-    let value = { user, signin, signout };
-  
+
+
+
+    let value = { user, signin, signout, register };
+
+    useEffect(() => {
+        const userInfo = localStorage.getItem('user');
+        if (userInfo) {
+            setUser(JSON.parse(userInfo));
+        }
+        setloadingUser(false);
+
+        return () => {
+
+        }
+    }, [])
+
+    if (loadingUser) {
+        return (
+            <div style={{
+                height: '100vh',
+                background: 'rgba(0, 0, 0, 0.05)',
+                borderRadius: 4,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+            }}>
+                <Spin size='large' spinning={true} indicator={antIcon}/>
+            </div>
+        )
+
+    }
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-  }
+}

@@ -1,8 +1,8 @@
 import useFetchAndLoad from '@hooks/useFetchAndLoad';
 import { TipoAdicionAlojamientos } from "@models/tipos-adicion-alojamiento";
-import { CreateAdicionAlojamiento, GetTiposAdicionesAlojamientos, UpdateAdicionAlojamiento } from '@services/tipos-adicion-alojamiento.service';
 import { Modal, Button, Form, Input, Row, Col } from 'antd';
 import { FC, useEffect } from 'react';
+import { GetTiposAdiciones, CreateTiposAdiciones, UpdateTiposAdiciones } from '@services/tipos-adiciones-alojamiento.service';
 
 interface ModalAdicionAlojamientosProps {
     closeModal: (result: any) => void;
@@ -17,12 +17,13 @@ const ModalAdicionAlojamiento: FC<ModalAdicionAlojamientosProps> = ({ closeModal
     const [form] = Form.useForm();
     const { loading, callEndpoint } = useFetchAndLoad();
 
-    const getAdicionAlojamientoApi = async (id:number) => await callEndpoint(GetTiposAdicionesAlojamientos(id));
+    const getAdicionAlojamientoApi = async (id:number) => await callEndpoint(GetTiposAdiciones(id));
 
     const adaptAdicionAlojamiento = (data: TipoAdicionAlojamientos)=>{
         form.setFieldsValue({
             nombre: data.nombre,
             descripcion: data.descripcion,
+            valor: data.valor,
         }) 
     }
 
@@ -34,11 +35,11 @@ const ModalAdicionAlojamiento: FC<ModalAdicionAlojamientosProps> = ({ closeModal
     }
 
     const create = async (data: TipoAdicionAlojamientos)=> {
-        await callEndpoint(CreateAdicionAlojamiento(data));
+        await callEndpoint(CreateTiposAdiciones(data));
     };
 
     const update = async (id:number,data:Partial<TipoAdicionAlojamientos>) =>{
-        await callEndpoint(UpdateAdicionAlojamiento(id,data));
+        await callEndpoint(UpdateTiposAdiciones(id,data));
     }
 
     useEffect(()=>{

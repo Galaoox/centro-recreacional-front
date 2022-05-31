@@ -3,7 +3,8 @@ import { createContext } from "react";
 // todo: cambiar los tipos
 interface AuthContextType {
     user: AuthInfo;
-    signin: (user: string, callback: VoidFunction) => void;
+    signin: (user: any, callback: VoidFunction) => void;
+    register: (user: any, callback: VoidFunction) => void;
     signout: (callback: VoidFunction) => void;
 }
 

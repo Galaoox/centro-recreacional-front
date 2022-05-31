@@ -1,14 +1,17 @@
 import { useAsync } from "@hooks/useAsync";
 import useFetchAndLoad from "@hooks/useFetchAndLoad";
-import { Card, List, Typography } from "antd";
+import { Button, Card, List, notification, Typography } from "antd";
 import { useState } from "react";
 import { GetAllTiposMembresia } from '../../services/tipos-membresia.service';
 import { GetTiposDescuentos } from '@services/tipos-membresia.service';
+import { CreateMembresia } from "@services/membresia.service";
+import { useAuth } from "@hooks/useAuth";
 
 const { Title } = Typography;
 
 
 const Membresia = () => {
+    const { user } = useAuth();
     const { loading, callEndpoint } = useFetchAndLoad();
     const [data, setData] = useState<any>([]);
     const [listDescuentos, setListDescuentos] = useState<any>([]);
@@ -21,14 +24,32 @@ const Membresia = () => {
             item.descuentos = item.descuentos.map((descuento: any) => {
                 return {
                     ...descuento,
-                    name: descuento.id == 1 ? 'Entradas' : 'Hospedaje'
+                    name: descuento.type == 1 ? 'Entradas' : 'Hospedaje'
                 }
             })
             return item;
         });
         setData(res);
     }
+    
+    const adquirirMembresia = async (membresia:any) => {
+        const start = new Date();
+        const end = new Date(start.getFullYear() + 1, start.getMonth(), start.getDate());
+        const data = {
+            valor: membresia.valor,
+            descuentos: membresia.descuentos,
+            fechaInicio: start,
+            fechaFin: end,
+            tipoMembresiaId: membresia.id,
+        };
+        await callEndpoint(CreateMembresia(data));
+        notification['success']({
+            message: 'Membresia adquirida correctamente',
+          });
+    }
+
     useAsync(getApiData, adapt, () => { });
+
     return (
         <>
             <Title level={1}>Membresias</Title>
@@ -70,6 +91,12 @@ const Membresia = () => {
                                 })
                             }
                             </div>
+                            <Button style={{width:'100%'}} type="primary" disabled={!user.accessToken} onClick={() => adquirirMembresia(item)} >{'Adquirir por: $'+item.valor}</Button>
+                            {
+                                !user.accessToken && (
+                                    <p style={{textAlign: 'center'}}>Para adquirir una membresia debes iniciar sesion</p>
+                                )
+                            }
                         </Card>
                     </List.Item>
                 )}
