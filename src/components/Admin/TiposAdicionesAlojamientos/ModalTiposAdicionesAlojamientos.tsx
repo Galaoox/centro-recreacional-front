@@ -1,49 +1,49 @@
 import useFetchAndLoad from '@hooks/useFetchAndLoad';
-import { atracciones } from "@models/atracciones";
-import { CreateAtracciones, GetAtracciones, UpdateAtracciones } from '@services/atracciones.service';
+import { TipoAdicionAlojamientos } from "@models/tipos-adicion-alojamiento";
+import { CreateAdicionAlojamiento, GetTiposAdicionesAlojamientos, UpdateAdicionAlojamiento } from '@services/tipos-adicion-alojamiento.service';
 import { Modal, Button, Form, Input, Row, Col } from 'antd';
 import { FC, useEffect } from 'react';
 
-interface ModalAtraccionesProps {
+interface ModalAdicionAlojamientosProps {
     closeModal: (result: any) => void;
-    data: atracciones;
+    data: TipoAdicionAlojamientos;
     visible: boolean;
     action: string;
 }
 
 
 
-const ModalAtracciones: FC<ModalAtraccionesProps> = ({ closeModal, visible, data,action  }) => {
+const ModalAdicionAlojamiento: FC<ModalAdicionAlojamientosProps> = ({ closeModal, visible, data,action  }) => {
     const [form] = Form.useForm();
     const { loading, callEndpoint } = useFetchAndLoad();
 
-    const getAtraccionesApi = async (id:number) => await callEndpoint(GetAtracciones(id));
+    const getAdicionAlojamientoApi = async (id:number) => await callEndpoint(GetTiposAdicionesAlojamientos(id));
 
-    const adaptAtracciones = (data: atracciones)=>{
+    const adaptAdicionAlojamiento = (data: TipoAdicionAlojamientos)=>{
         form.setFieldsValue({
             nombre: data.nombre,
             descripcion: data.descripcion,
         }) 
     }
 
-    const getAtracciones = async()=>{
+    const getAdicionAlojamiento = async()=>{
         if(data?.id && visible){
-            const result = await getAtraccionesApi(data.id);
-            adaptAtracciones(result.data);
+            const result = await getAdicionAlojamientoApi(data.id);
+            adaptAdicionAlojamiento(result.data);
         }
     }
 
-    const create = async (data: atracciones)=> {
-        await callEndpoint(CreateAtracciones(data));
+    const create = async (data: TipoAdicionAlojamientos)=> {
+        await callEndpoint(CreateAdicionAlojamiento(data));
     };
 
-    const update = async (id:number,data:Partial<atracciones>) =>{
-        await callEndpoint(UpdateAtracciones(id,data));
+    const update = async (id:number,data:Partial<TipoAdicionAlojamientos>) =>{
+        await callEndpoint(UpdateAdicionAlojamiento(id,data));
     }
 
     useEffect(()=>{
         if(action === 'edit'){
-            getAtracciones();
+            getAdicionAlojamiento();
         }
         return ()=>{
 
@@ -79,7 +79,7 @@ const ModalAtracciones: FC<ModalAtraccionesProps> = ({ closeModal, visible, data
         <Modal
             forceRender
             visible={visible}
-            title={action === 'add' ? 'Crear Atracciones' : 'Editar Atracciones'}
+            title={action === 'add' ? 'Crear Tipos Adición Alojamiento' : 'Editar Tipos Adición Alojamiento '}
             onCancel={closeModal}
             footer={[
                 <Button key="back" onClick={closeModal}>
@@ -118,4 +118,4 @@ const style = {
 
 }
 
-export default ModalAtracciones
+export default ModalAdicionAlojamiento
