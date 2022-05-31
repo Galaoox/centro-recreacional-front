@@ -37,7 +37,7 @@ export const Navigator = () => {
                         <Route index element={
                             <Inicio />
                         } />
-                        <Route path="inicio-sesion" element={<Login />} />
+                        <Route path="inicio-sesion"  element={<Login />} />
                         <Route path="registro" element={<Register />} />
                         <Route path="horarios" element={<Horarios />} />
                         <Route path="restaurante" element={<Restaurante />} />
@@ -45,8 +45,6 @@ export const Navigator = () => {
                         <Route path="membresia" element={<Membresia />} />
                         <Route path="hospedaje" element={<Hospedaje />} />
                         <Route path="entradas" element={<Entradas />} />
-
-
                     </Route>
                     <Route path="admin" element={
                         <Suspense>

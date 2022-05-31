@@ -58,15 +58,13 @@ export function DeleteTipoAlojamiento(id: number){
     }
 }
 
-export function UploadImageTipoAlojamiento(id: number, data: FormData){
+export function UploadImageTipoAlojamiento(id: number, data: any){
     const controller = loadAbort();
     return {
-        call: axios.post<any>(`${API}/tipos-alojamiento/${id}`,data,{
+        call: axios.post<any>(`${API}/tipos-alojamiento/upload/${id}`,data,{
             signal: controller.signal,
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
         }),
         controller
     }
 }
+

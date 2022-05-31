@@ -1,9 +1,9 @@
-import { useAsync } from '@hooks/useAsync';
 import useFetchAndLoad from '@hooks/useFetchAndLoad';
 import { TipoAlojamiento } from '@models/tipo-alojamiento';
-import { CreateTipoAlojamiento, GetTipoAlojamiento, UpdateTipoAlojamiento } from '@services/tipos-alojamiento.service';
-import { Modal, Button, Form, Input, Row, Col } from 'antd';
-import { FC, useEffect } from 'react';
+import { CreateTipoAlojamiento, GetTipoAlojamiento, UpdateTipoAlojamiento, UploadImageTipoAlojamiento } from '@services/tipos-alojamiento.service';
+import { Modal, Button, Form, Input, Row, Col, Upload } from 'antd';
+import { FC, useEffect, useState } from 'react';
+import { getBase64 } from '@utilities/file-upload.utility';
 
 interface ModalTiposAlojamientosProps {
     closeModal: (result: any) => void;
@@ -14,60 +14,75 @@ interface ModalTiposAlojamientosProps {
 
 
 
-const ModalTiposAlojamientos: FC<ModalTiposAlojamientosProps> = ({ closeModal, visible, data,action  }) => {
+const ModalTiposAlojamientos: FC<ModalTiposAlojamientosProps> = ({ closeModal, visible, data, action }) => {
     const [form] = Form.useForm();
     const { loading, callEndpoint } = useFetchAndLoad();
+    const [selectedFile, setSelectedFile] = useState();
 
-    const getTipoAlojamientoApi = async (id:number) => await callEndpoint(GetTipoAlojamiento(id));
+    const getTipoAlojamientoApi = async (id: number) => await callEndpoint(GetTipoAlojamiento(id));
 
-    const adaptTipoAlojamiento = (data: TipoAlojamiento)=>{
+    const adaptTipoAlojamiento = (data: TipoAlojamiento) => {
         form.setFieldsValue({
             nombre: data.nombre,
             descripcion: data.descripcion,
             capacidadPersonas: data.capacidadPersonas,
             cantidadDisponibles: data.cantidadDisponibles,
             valor: data.valor,
-        }) 
+        })
     }
 
-    const getTipoAlojamiento = async()=>{
-        if(data?.id && visible){
+    const getTipoAlojamiento = async () => {
+        if (data?.id && visible) {
             const result = await getTipoAlojamientoApi(data.id);
             adaptTipoAlojamiento(result.data);
         }
     }
 
-    const create = async (data: TipoAlojamiento)=> {
-        await callEndpoint(CreateTipoAlojamiento(data));
-    };
-
-    const update = async (id:number,data:Partial<TipoAlojamiento>) =>{
-        await callEndpoint(UpdateTipoAlojamiento(id,data));
+    const uploadImage = async (id: number) => {
+        if (id && selectedFile) {
+            const file = await getBase64(selectedFile);
+            if(file){
+                const data = {image: file}
+                await callEndpoint(UploadImageTipoAlojamiento(id, data));
+            }
+        }
     }
 
-    useEffect(()=>{
-        if(action === 'edit'){
+    const create = async (data: TipoAlojamiento) => {
+        return await callEndpoint(CreateTipoAlojamiento(data));
+    };
+
+    const update = async (id: number, data: Partial<TipoAlojamiento>) => {
+        await callEndpoint(UpdateTipoAlojamiento(id, data));
+    }
+
+    useEffect(() => {
+        if (action === 'edit') {
             getTipoAlojamiento();
         }
-        return ()=>{
+        return () => {
 
         }
-    },[]);
+    }, []);
 
 
     const handleSubmit = async () => {
-        try{
+        try {
+            let id = null;
             let result = await form.validateFields();
             result.cantidadDisponibles = Number(result.cantidadDisponibles);
             result.capacidadPersonas = Number(result.capacidadPersonas);
             result.valor = Number(result.valor);
-            if (action =='add') {
-                await create(result);
-            }else{
-                if(data.id) await update(data.id,result);
+            if (action == 'add') {
+              const resultCreate = await create(result);
+              id = resultCreate.data.id;
+            } else {
+                if (data.id) await update(data.id, result);
+                id = data.id;
             }
+            await uploadImage(id);
             closeModal(true);
-        }catch(e){
+        } catch (e) {
             console.log(e);
         }
     }
@@ -82,6 +97,10 @@ const ModalTiposAlojamientos: FC<ModalTiposAlojamientosProps> = ({ closeModal, v
         cantidadDisponibles: [{ required: true, message: 'La cantidad disponibles es requerida' }],
         valor: [{ required: true, message: 'El valor es requerido' }],
     }
+
+	const changeHandler = (event:any) => {
+		setSelectedFile(event.target.files[0]);
+	};
 
     return (
         <Modal
@@ -119,7 +138,7 @@ const ModalTiposAlojamientos: FC<ModalTiposAlojamientosProps> = ({ closeModal, v
                             <Input type="number" required min={0} />
                         </Form.Item>
                     </Col>
-                    
+
                     <Col span={12}>
                         <Form.Item name='cantidadDisponibles' label="Cantidad" rules={rulesForm.cantidadDisponibles}>
                             <Input type="number" required min={0} />
@@ -128,11 +147,11 @@ const ModalTiposAlojamientos: FC<ModalTiposAlojamientosProps> = ({ closeModal, v
                 </Row>
 
                 <Form.Item name='valor' label="Valor" rules={rulesForm.valor}>
-                    <Input type="number" required min={1}    />
+                    <Input type="number" required min={1} />
                 </Form.Item>
 
-                <Form.Item  label="Imagen">
-                    <Input type="file" />
+                <Form.Item label="Imagen" >
+                    <Input type={'file'} onChange={changeHandler} />
                 </Form.Item>
 
             </Form>
