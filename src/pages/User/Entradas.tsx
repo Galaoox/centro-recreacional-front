@@ -1,8 +1,14 @@
+import { Typography } from "antd";
+
+const { Title } = Typography;
 
 const Entradas = () => {
-  return (
-    <div>Entradas</div>
-  )
+    return (
+        <>
+            <Title level={1}>Entradas</Title>
+
+        </>
+    )
 }
 
 export default Entradas

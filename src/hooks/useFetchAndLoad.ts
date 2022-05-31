@@ -1,7 +1,9 @@
 import { AxiosCall } from '@models/axios-call.model';
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { useLoading } from './useLoading';
+
+
 
 const useFetchAndLoad = () => {
     const { loading, setLoading } = useLoading();
@@ -13,6 +15,7 @@ const useFetchAndLoad = () => {
         setLoading(true);
         let result = {} as AxiosResponse<any>;
         try {
+            axiosCall.call
             result = await axiosCall.call;
         } catch (err: any) {
             setLoading(false);

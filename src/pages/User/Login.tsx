@@ -17,7 +17,7 @@ const Login = () => {
 
     const onFinish = async (values: any) => {
         auth.signin(values, () => {
-            return navigate('/admin');
+            return navigate('/');
         });
     };
 
