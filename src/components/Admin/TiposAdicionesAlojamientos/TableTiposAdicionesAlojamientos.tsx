@@ -4,10 +4,11 @@ import { useAsync } from '@hooks/useAsync';
 import useFetchAndLoad from '@hooks/useFetchAndLoad';
 import { ActionButtonTable } from '@models/action-button-table.model';
 import { TipoAdicionAlojamientos } from "@models/tipos-adicion-alojamiento";
-import { DeleteAdicionAlojamiento, GetAllTipoAdicionAlojamientos } from '@services/tipos-adicion-alojamiento.service';
 import { Modal, Table } from 'antd';
 import { useState } from 'react';
 import ModalTiposAdicionesAlojamientos from './ModalTiposAdicionesAlojamientos'
+import { GetAllTiposAdiciones, DeleteTiposAdiciones } from '@services/tipos-adiciones-alojamiento.service';
+
 
 const { confirm } = Modal;
 
@@ -34,7 +35,7 @@ const TableTiposAdicionesAlojamientos = () => {
     const [visibleForm, setVisibleForm] = useState<boolean>(false);
     const [action, setAction] = useState<string>('');
 
-    const getApiData = async () => await callEndpoint(GetAllTipoAdicionAlojamientos());
+    const getApiData = async () => await callEndpoint((GetAllTiposAdiciones()));
 
     const handleChangeRowSelection = (selectedRowKeys: React.Key[], selectedRows: TipoAdicionAlojamientos[]) => {
         setSelection(selectedRows[0] ? selectedRows[0] : null);
@@ -51,7 +52,7 @@ const TableTiposAdicionesAlojamientos = () => {
     }
 
     const remove = async()=>{
-        await callEndpoint(DeleteAdicionAlojamiento(selection.id));
+        await callEndpoint(DeleteTiposAdiciones(selection.id));
         await reloadData();
     }
 

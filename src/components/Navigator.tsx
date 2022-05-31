@@ -26,6 +26,7 @@ import { Suspense } from "react"
 import RequireAuth from "@guards/RequireAuth"
 import Inicio from "@pages/User/Inicio"
 import WithAxios from "./WithAxios"
+import Cuenta from "@pages/User/Cuenta"
 
 export const Navigator = () => {
     return (
@@ -47,6 +48,12 @@ export const Navigator = () => {
                             <Route path="membresia" element={<Membresia />} />
                             <Route path="hospedaje" element={<Hospedaje />} />
                             <Route path="entradas" element={<Entradas />} />
+                            <Route path="cuenta" element={
+                                <RequireAuth>
+                                    <Cuenta />
+                                </RequireAuth>
+                            } />
+
                         </Route>
                         <Route path="admin" element={
                             <Suspense>

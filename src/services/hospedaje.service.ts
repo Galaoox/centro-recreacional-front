@@ -12,3 +12,13 @@ export function CreateHospedaje(data: any){
         controller
     }
 }
+
+export function GetAllHospedajesByUsuario(){
+    const controller = loadAbort();
+    return {
+        call: axios.get<any>(`${API}/hospedaje/getAllHospedajesByUsuario`, {
+            signal: controller.signal,
+        }),
+        controller
+    }
+}

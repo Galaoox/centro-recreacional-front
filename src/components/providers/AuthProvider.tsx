@@ -55,7 +55,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         const userInfo = localStorage.getItem('user');
         if (userInfo) {
-            console.log('valores obtenidos');
             setUser(JSON.parse(userInfo));
         }
         setloadingUser(false);
