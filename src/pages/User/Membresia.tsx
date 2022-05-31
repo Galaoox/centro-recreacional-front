@@ -5,11 +5,13 @@ import { useState } from "react";
 import { GetAllTiposMembresia } from '../../services/tipos-membresia.service';
 import { GetTiposDescuentos } from '@services/tipos-membresia.service';
 import { CreateMembresia } from "@services/membresia.service";
+import { useAuth } from "@hooks/useAuth";
 
 const { Title } = Typography;
 
 
 const Membresia = () => {
+    const { user } = useAuth();
     const { loading, callEndpoint } = useFetchAndLoad();
     const [data, setData] = useState<any>([]);
     const [listDescuentos, setListDescuentos] = useState<any>([]);
@@ -89,7 +91,12 @@ const Membresia = () => {
                                 })
                             }
                             </div>
-                            <Button style={{width:'100%'}} type="primary" onClick={() => adquirirMembresia(item)} >{'Adquirir por: $'+item.valor}</Button>
+                            <Button style={{width:'100%'}} type="primary" disabled={!user.accessToken} onClick={() => adquirirMembresia(item)} >{'Adquirir por: $'+item.valor}</Button>
+                            {
+                                !user.accessToken && (
+                                    <p style={{textAlign: 'center'}}>Para adquirir una membresia debes iniciar sesion</p>
+                                )
+                            }
                         </Card>
                     </List.Item>
                 )}

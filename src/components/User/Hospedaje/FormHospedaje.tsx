@@ -11,12 +11,14 @@ import { GetAllTiposAdiciones } from '@services/tipos-adiciones-alojamiento.serv
 import { GetAllTiposAlojamiento } from '@services/tipos-alojamiento.service';
 import { CreateHospedaje } from '@services/hospedaje.service';
 import { GetMembresiaUsuario } from '@services/membresia.service';
+import { useAuth } from '@hooks/useAuth';
 
 const { Title } = Typography;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 const FormHospedaje = () => {
+    const {user} = useAuth();
     const [form] = Form.useForm();
     const [tiposAlojamiento, setTiposAlojamiento] = useState([]);
     const [tiposAdiciones, setTiposAdiciones] = useState([]);
@@ -184,9 +186,14 @@ const FormHospedaje = () => {
                     <Form.Item style={{
                         textAlign: 'center'
                     }}>
-                        <Button type="primary" htmlType="submit" >
+                        <Button type="primary" htmlType="submit" disabled={!user.accessToken} >
                             Reservar
                         </Button>
+                        {
+                                !user.accessToken && (
+                                    <p style={{textAlign: 'center'}}>Para reservar debes iniciar sesion</p>
+                                )
+                            }
                     </Form.Item>
                 </Form>
             </Card>
