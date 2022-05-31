@@ -12,3 +12,13 @@ export function CreateEntrada(data: any){
         controller
     }
 }
+
+export function GetAllEntradasByUsuario(){
+    const controller = loadAbort();
+    return {
+        call: axios.get<any>(`${API}/entradas/getAllEntradasByUsuario`, {
+            signal: controller.signal,
+        }),
+        controller
+    }
+}

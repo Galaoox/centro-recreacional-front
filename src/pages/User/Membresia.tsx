@@ -24,7 +24,7 @@ const Membresia = () => {
             item.descuentos = item.descuentos.map((descuento: any) => {
                 return {
                     ...descuento,
-                    name: descuento.id == 1 ? 'Entradas' : 'Hospedaje'
+                    name: descuento.type == 1 ? 'Entradas' : 'Hospedaje'
                 }
             })
             return item;

@@ -1,4 +1,6 @@
+import InfoEntradas from '@components/User/Cuenta/InfoEntradas';
 import InfoHospedajes from '@components/User/Cuenta/InfoHospedajes';
+import InfoMembresia from '@components/User/Cuenta/InfoMembresia';
 import { Tabs, Typography } from 'antd';
 import React from 'react'
 
@@ -15,10 +17,10 @@ const Cuenta = () => {
                     <InfoHospedajes/>
                 </TabPane>
                 <TabPane tab="Entradas" key="2">
-                    Content of Tab Pane 2
+                    <InfoEntradas/>
                 </TabPane>
                 <TabPane tab="Membresia" key="3">
-                    Content of Tab Pane 3
+                    <InfoMembresia />
                 </TabPane>
             </Tabs>
         </>

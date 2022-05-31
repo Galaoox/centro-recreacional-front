@@ -9,7 +9,6 @@ const WithAxios: FC<any> = ({ children }) => {
             const datalocal = localStorage.getItem('user');
             if(datalocal){
                 const user = JSON.parse(datalocal);
-                console.log(user);
                 request.headers.Authorization = `Bearer ${user.accessToken}`;
             }else{
                 request.headers.Authorization = `Bearer ${''}`;
