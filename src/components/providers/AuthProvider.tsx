@@ -12,7 +12,7 @@ enum Roles {
     USER = 2,
 }
 
-const antIcon = <LoadingOutlined style={{ fontSize: 100, color: 'red' }} spin />;
+const antIcon = <LoadingOutlined style={{ fontSize: 100, color: 'blue' }} spin />;
 
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -68,12 +68,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (loadingUser) {
         return (
             <div style={{
-                margin: '20px 0',
-                marginBottom: 20,
-                padding: '30px 50px',
-                textAlign: 'center',
+                height: '100vh',
                 background: 'rgba(0, 0, 0, 0.05)',
                 borderRadius: 4,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
             }}>
                 <Spin size='large' spinning={true} indicator={antIcon}/>
             </div>

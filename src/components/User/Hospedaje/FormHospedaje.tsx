@@ -37,7 +37,7 @@ const FormHospedaje = () => {
             numeroPersonas: Number(values.numeroPersonas),
             valor: calcValorTipoAlojamiento() / calcCantidadDias(values),
             valorTotal: calcValorTotal(),
-            adiciones: values.adiciones,
+            adiciones: tiposAdiciones.filter(x => values.adiciones.includes(x)),
         }
         console.log(data);
     };

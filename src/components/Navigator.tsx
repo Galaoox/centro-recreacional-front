@@ -53,7 +53,6 @@ export const Navigator = () => {
                                 <RequireAuth>
                                     <RequireIsAdmin>
                                         <AdminLayout />
-
                                     </RequireIsAdmin>
                                 </RequireAuth>
 
