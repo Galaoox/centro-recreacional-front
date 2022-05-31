@@ -1,49 +1,49 @@
 import useFetchAndLoad from '@hooks/useFetchAndLoad';
-import { atracciones } from "@models/atracciones";
-import { CreateAtracciones, GetAtracciones, UpdateAtracciones } from '@services/atracciones.service';
+import { TiposEntradas } from "@models/tipos-entradas.model";
+import { CreateTiposEntradas, GetTiposEntradas, UpdateTiposEntradas } from '@services/tipos-entradas.service';
 import { Modal, Button, Form, Input, Row, Col } from 'antd';
 import { FC, useEffect } from 'react';
 
-interface ModalAtraccionesProps {
+interface ModalTiposEntradasProps {
     closeModal: (result: any) => void;
-    data: atracciones;
+    data: TiposEntradas;
     visible: boolean;
     action: string;
 }
 
 
 
-const ModalAtracciones: FC<ModalAtraccionesProps> = ({ closeModal, visible, data,action  }) => {
+const ModalTiposEntradas: FC<ModalTiposEntradasProps> = ({ closeModal, visible, data,action  }) => {
     const [form] = Form.useForm();
     const { loading, callEndpoint } = useFetchAndLoad();
 
-    const getAtraccionesApi = async (id:number) => await callEndpoint(GetAtracciones(id));
+    const getTiposEntradasApi = async (id:number) => await callEndpoint(GetTiposEntradas(id));
 
-    const adaptAtracciones = (data: atracciones)=>{
+    const adaptTiposEntradas = (data: TiposEntradas)=>{
         form.setFieldsValue({
             nombre: data.nombre,
             descripcion: data.descripcion,
         }) 
     }
 
-    const getAtracciones = async()=>{
+    const getTiposEntradas = async()=>{
         if(data?.id && visible){
-            const result = await getAtraccionesApi(data.id);
-            adaptAtracciones(result.data);
+            const result = await getTiposEntradasApi(data.id);
+            adaptTiposEntradas(result.data);
         }
     }
 
-    const create = async (data: atracciones)=> {
-        await callEndpoint(CreateAtracciones(data));
+    const create = async (data: TiposEntradas)=> {
+        await callEndpoint(CreateTiposEntradas(data));
     };
 
-    const update = async (id:number,data:Partial<atracciones>) =>{
-        await callEndpoint(UpdateAtracciones(id,data));
+    const update = async (id:number,data:Partial<TiposEntradas>) =>{
+        await callEndpoint(UpdateTiposEntradas(id,data));
     }
 
     useEffect(()=>{
         if(action === 'edit'){
-            getAtracciones();
+            getTiposEntradas();
         }
         return ()=>{
 
@@ -79,7 +79,7 @@ const ModalAtracciones: FC<ModalAtraccionesProps> = ({ closeModal, visible, data
         <Modal
             forceRender
             visible={visible}
-            title={action === 'add' ? 'Crear Atracciones' : 'Editar Atracciones'}
+            title={action === 'add' ? 'Crear Tipos Entradas' : 'Editar Tipos Entradas '}
             onCancel={closeModal}
             footer={[
                 <Button key="back" onClick={closeModal}>
@@ -118,4 +118,4 @@ const style = {
 
 }
 
-export default ModalAtracciones
+export default ModalTiposEntradas
